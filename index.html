@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MGMP Bahasa Inggris</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --c1:#6C63FF;--c1l:#EEF0FF;
+  --c2:#FF6584;--c2l:#FFECF0;
+  --c3:#10B981;--c3l:#D1FAE5;
+  --c4:#F59E0B;--c4l:#FEF3C7;
+  --c5:#3B82F6;--c5l:#DBEAFE;
+  --c6:#A855F7;--c6l:#F3E8FF;
+  --dark:#1E1B4B;--text:#2D3748;--muted:#94A3B8;
+  --bg:#F5F7FF;--card:#fff;--border:#E8EEFF;
+  --bnav:60px;--hdr:56px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);}
+
+/* AUTH */
+#auth-screen{
+  position:fixed;inset:0;z-index:9999;overflow-y:auto;
+  background:linear-gradient(160deg,#1E1B4B,#312E81 50%,#4C1D95);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;
+}
+#auth-screen::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 15% 15%,rgba(108,99,255,.35),transparent 55%),
+             radial-gradient(ellipse at 85% 85%,rgba(168,85,247,.28),transparent 55%);}
+.alogo{text-align:center;margin-bottom:28px;position:relative;z-index:1;}
+.alogo-icon{width:90px;height:90px;background:linear-gradient(135deg,var(--c1),var(--c6));
+  border-radius:26px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;font-size:42px;
+  box-shadow:0 16px 48px rgba(108,99,255,.5),0 0 0 10px rgba(108,99,255,.12);}
+.alogo h1{color:#fff;font-size:22px;font-weight:800;}
+.alogo p{color:rgba(255,255,255,.55);font-size:13px;margin-top:5px;}
+.acard{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.16);border-radius:24px;
+  padding:22px 18px;width:100%;max-width:400px;position:relative;z-index:1;}
+.atabs{display:flex;background:rgba(0,0,0,.25);border-radius:12px;padding:4px;margin-bottom:18px;gap:4px;}
+.atab{flex:1;text-align:center;padding:9px;border-radius:9px;cursor:pointer;
+  color:rgba(255,255,255,.45);font-size:13px;font-weight:700;transition:all .25s;}
+.atab.on{background:linear-gradient(135deg,var(--c1),var(--c6));color:#fff;
+  box-shadow:0 4px 14px rgba(108,99,255,.45);}
+.af{display:none;}.af.on{display:block;}
+.fg{margin-bottom:13px;}
+.fg label{display:block;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;
+  margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px;}
+.fg input{width:100%;padding:12px 14px;
+  background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.13);
+  border-radius:12px;color:#fff;font-size:14px;font-family:inherit;outline:none;transition:border .2s;}
+.fg input::placeholder{color:rgba(255,255,255,.3);}
+.fg input:focus{border-color:var(--c1);}
+.abtn{width:100%;padding:14px;background:linear-gradient(135deg,var(--c1),var(--c6));
+  border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;
+  cursor:pointer;font-family:inherit;margin-top:6px;letter-spacing:.2px;
+  box-shadow:0 6px 20px rgba(108,99,255,.4);transition:transform .15s;}
+.abtn:active{transform:scale(.97);}
+.amsg{text-align:center;margin-top:10px;font-size:12px;color:rgba(255,255,255,.5);min-height:18px;}
+.amsg.err{color:#FCA5A5;}.amsg.ok{color:#6EE7B7;}
+.awm{color:rgba(255,255,255,.2);font-size:10px;text-align:center;margin-top:18px;position:relative;z-index:1;}
+
+/* APP SHELL */
+#app{position:fixed;inset:0;display:none;flex-direction:column;}
+
+/* HEADER */
+.hdr{height:var(--hdr);flex-shrink:0;display:flex;align-items:center;
+  padding:0 14px;gap:10px;background:var(--card);
+  border-bottom:1.5px solid var(--border);}
+.hdr-left{display:flex;align-items:center;gap:9px;flex:1;min-width:0;}
+.hdr-icon{font-size:20px;flex-shrink:0;}
+.hdr-title{font-size:15px;font-weight:800;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+.hdr-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;cursor:pointer;
+  box-shadow:0 2px 8px rgba(108,99,255,.3);}
+.hdr-chip{background:linear-gradient(135deg,#FFD700,#F59E0B);color:#92400E;
+  font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;}
+
+/* SCROLL */
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  padding-bottom:calc(var(--bnav) + 70px);}
+
+/* PAGES */
+.page{display:none;animation:fu .28s ease;}
+.page.on{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* BOTTOM NAV */
+.bnav{height:var(--bnav);flex-shrink:0;background:var(--card);
+  border-top:1.5px solid var(--border);display:flex;align-items:stretch;}
+.bn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;border:none;background:none;font-family:inherit;
+  padding:0;position:relative;transition:all .2s;}
+.bn-i{font-size:20px;transition:transform .2s;}
+.bn-l{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+.bn.on .bn-l{color:var(--c1);}
+.bn.on .bn-i{transform:scale(1.18);}
+.bn.on::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:30px;height:3px;background:linear-gradient(90deg,var(--c1),var(--c6));border-radius:0 0 3px 3px;}
+.bn-more{width:50px;height:50px;border-radius:16px;
+  background:linear-gradient(135deg,var(--c1),var(--c6));
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;color:#fff;cursor:pointer;flex:none;align-self:center;
+  box-shadow:0 4px 16px rgba(108,99,255,.45);margin:0 8px;border:none;}
+
+/* PAGE HEADERS */
+.pg-hdr{padding:18px 16px 16px;color:#fff;position:relative;overflow:hidden;}
+.pg-hdr::after{content:attr(data-emoji);position:absolute;right:-10px;top:-10px;font-size:90px;opacity:.1;}
+.pg-hdr h2{font-size:20px;font-weight:800;}
+.pg-hdr p{font-size:12px;opacity:.8;margin-top:3px;}
+
+/* DASHBOARD */
+.hero{background:linear-gradient(135deg,#1E1B4B,#4C1D95);padding:20px 16px;position:relative;overflow:hidden;}
+.hero::before{content:'🎓';position:absolute;right:-10px;top:-10px;font-size:90px;opacity:.08;}
+.hero-hi{color:rgba(255,255,255,.65);font-size:12px;font-weight:500;}
+.hero-name{color:#fff;font-size:19px;font-weight:800;margin-top:2px;}
+.hero-chip{display:inline-block;margin-top:8px;background:rgba(255,255,255,.15);
+  color:rgba(255,255,255,.9);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 16px 0;}
+.scard{border-radius:16px;padding:14px 12px;position:relative;overflow:hidden;}
+.scard:nth-child(1){background:linear-gradient(135deg,#6C63FF,#A855F7);}
+.scard:nth-child(2){background:linear-gradient(135deg,#FF6584,#FF8E53);}
+.scard:nth-child(3){background:linear-gradient(135deg,#10B981,#3B82F6);}
+.scard:nth-child(4){background:linear-gradient(135deg,#F59E0B,#FFD166);}
+.scard::after{content:attr(data-e);position:absolute;right:-8px;bottom:-8px;font-size:50px;opacity:.18;}
+.snum{font-size:28px;font-weight:800;color:#fff;line-height:1;}
+.slbl{font-size:11px;color:rgba(255,255,255,.8);margin-top:4px;font-weight:600;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px;}
+.sec-title{font-size:14px;font-weight:800;color:var(--dark);}
+.see-all{font-size:12px;color:var(--c1);font-weight:700;cursor:pointer;
+  background:var(--c1l);padding:4px 10px;border-radius:20px;}
+
+/* CARD */
+.card{background:var(--card);border-radius:16px;padding:14px;margin:0 16px 10px;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);border:1px solid var(--border);}
+
+/* ANNOUNCEMENT */
+.ann{border-radius:14px;padding:12px 14px;margin:0 16px 10px;
+  border-left:4px solid var(--c4);background:var(--c4l);}
+.ann-title{font-size:13px;font-weight:700;color:var(--dark);}
+.ann-body{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.55;}
+.ann-date{font-size:10px;color:var(--c4);font-weight:700;margin-top:6px;}
+.ann-acts{display:flex;gap:6px;margin-top:8px;}
+
+/* AGENDA MINI */
+.ag-mini{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--border);}
+.ag-mini:last-child{border-bottom:none;}
+.ag-dot{width:8px;height:8px;border-radius:50%;background:var(--c1);flex-shrink:0;}
+.ag-mini-title{font-size:13px;font-weight:600;flex:1;}
+.ag-mini-date{font-size:11px;color:var(--muted);}
+
+/* GURU CARD */
+.gc{background:var(--card);border-radius:16px;padding:12px 14px;margin:0 16px 10px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid var(--border);}
+.gca{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:19px;font-weight:800;color:#fff;flex-shrink:0;}
+.gc-info{flex:1;min-width:0;}
+.gc-name{font-size:13px;font-weight:700;color:var(--dark);}
+.gc-school{font-size:11px;color:var(--muted);margin-top:2px;}
+.gc-badges{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;}
+.gc-acts{display:flex;flex-direction:column;gap:5px;}
+
+/* DOC / ARSIP / MATERI */
+.dc{background:var(--card);border-radius:16px;padding:12px 14px;margin:0 16px 10px;
+  display:flex;gap:11px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid var(--border);}
+.dc-icon{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.dc-body{flex:1;min-width:0;}
+.dc-title{font-size:13px;font-weight:700;color:var(--dark);}
+.dc-meta{font-size:11px;color:var(--muted);margin-top:3px;}
+.dc-acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+
+/* FORUM */
+.fc{background:var(--card);border-radius:16px;padding:13px 14px;margin:0 16px 10px;
+  box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid var(--border);}
+.fc-top{display:flex;gap:10px;margin-bottom:9px;}
+.fc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;flex-shrink:0;}
+.fc-author{font-size:13px;font-weight:700;color:var(--dark);}
+.fc-time{font-size:10px;color:var(--muted);}
+.fc-topic{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.fc-body{font-size:12px;color:var(--muted);line-height:1.6;}
+.fc-footer{display:flex;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid var(--border);}
+.fc-act{background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;gap:4px;font-family:inherit;font-weight:600;
+  padding:5px 8px;border-radius:8px;transition:background .2s;}
+.fc-act:hover{background:var(--bg);}
+.fc-replies{margin-top:10px;padding-top:9px;border-top:1px dashed var(--border);}
+.rep{display:flex;gap:8px;margin-bottom:8px;}
+.rep-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;color:#fff;flex-shrink:0;}
+.rep-bub{background:var(--bg);border-radius:4px 12px 12px 12px;padding:8px 10px;flex:1;}
+.rep-author{font-size:11px;font-weight:700;color:var(--c1);}
+.rep-text{font-size:12px;color:var(--text);margin-top:2px;line-height:1.5;}
+
+/* AGENDA */
+.agc{background:var(--card);border-radius:16px;padding:12px 14px;margin:0 16px 10px;
+  display:flex;gap:12px;box-shadow:0 2px 10px rgba(0,0,0,.04);border:1px solid var(--border);}
+.agc-date{min-width:54px;border-radius:12px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:8px 4px;}
+.agc-day{font-size:24px;font-weight:800;color:#fff;line-height:1;}
+.agc-month{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);text-align:center;}
+.agc-body{flex:1;}
+.agc-title{font-size:13px;font-weight:700;color:var(--dark);}
+.agc-info{font-size:11px;color:var(--muted);margin-top:4px;display:flex;flex-direction:column;gap:2px;}
+.agc-acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+
+/* INTEG */
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 16px;}
+.ig-card{background:var(--card);border-radius:16px;padding:13px 8px;text-align:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid var(--border);}
+.ig-logo{width:48px;height:48px;border-radius:14px;margin:0 auto 7px;
+  display:flex;align-items:center;justify-content:center;font-size:24px;}
+.ig-name{font-size:10px;font-weight:700;color:var(--dark);line-height:1.3;}
+.ig-acts{display:flex;gap:4px;justify-content:center;margin-top:7px;padding:0 4px;}
+.ig-wrap{display:flex;flex-direction:column;}
+
+/* PROFIL */
+.ph{background:linear-gradient(135deg,var(--c1),var(--c6));padding:26px 16px 22px;text-align:center;}
+.ph-av{width:78px;height:78px;border-radius:22px;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:800;color:#fff;
+  border:3px solid rgba(255,255,255,.35);}
+.ph-name{color:#fff;font-size:19px;font-weight:800;}
+.ph-role{color:rgba(255,255,255,.75);font-size:12px;margin-top:5px;}
+
+/* BADGE */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.bdg-p{background:var(--c1l);color:var(--c1);}
+.bdg-g{background:var(--c3l);color:#065F46;}
+.bdg-o{background:var(--c4l);color:#92400E;}
+.bdg-r{background:var(--c2l);color:#9F1239;}
+.bdg-b{background:var(--c5l);color:#1E40AF;}
+.bdg-adm{background:linear-gradient(135deg,var(--c1),var(--c6));color:#fff;}
+
+/* BUTTONS */
+.btn{padding:8px 13px;border:none;border-radius:10px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:transform .15s,opacity .15s;
+  display:inline-flex;align-items:center;gap:5px;}
+.btn:active{transform:scale(.93);}
+.bp{background:linear-gradient(135deg,var(--c1),var(--c6));color:#fff;box-shadow:0 3px 10px rgba(108,99,255,.3);}
+.bg{background:linear-gradient(135deg,var(--c3),var(--c5));color:#fff;box-shadow:0 3px 10px rgba(16,185,129,.25);}
+.bo{background:linear-gradient(135deg,var(--c4),#FBBF24);color:#fff;box-shadow:0 3px 10px rgba(245,158,11,.3);}
+.br{background:linear-gradient(135deg,var(--c2),#FF8E53);color:#fff;box-shadow:0 3px 10px rgba(255,101,132,.3);}
+.bv{background:linear-gradient(135deg,var(--c6),var(--c1));color:#fff;box-shadow:0 3px 10px rgba(168,85,247,.3);}
+.bline{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.bsm{padding:5px 10px;font-size:11px;border-radius:8px;}
+.bfull{width:100%;justify-content:center;padding:13px;}
+
+/* FAB */
+.fab{position:fixed;bottom:calc(var(--bnav) + 14px);right:16px;
+  width:54px;height:54px;border-radius:17px;
+  background:linear-gradient(135deg,var(--c1),var(--c6));
+  border:none;display:none;align-items:center;justify-content:center;
+  font-size:26px;color:#fff;cursor:pointer;z-index:150;
+  box-shadow:0 6px 22px rgba(108,99,255,.5);transition:transform .2s;}
+.fab:active{transform:scale(.88);}
+
+/* SEARCH */
+.srch{display:flex;align-items:center;gap:8px;background:var(--card);
+  border:1.5px solid var(--border);border-radius:13px;padding:10px 13px;
+  margin:12px 16px 0;}
+.srch input{flex:1;border:none;outline:none;font-size:13px;font-family:inherit;background:transparent;color:var(--text);}
+.srch span{color:var(--muted);}
+
+/* TABS */
+.tabs{display:flex;gap:7px;padding:12px 16px 4px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tbtn{flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;
+  border:1.5px solid var(--border);background:var(--card);color:var(--muted);
+  cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap;}
+.tbtn.on{background:linear-gradient(135deg,var(--c1),var(--c6));color:#fff;border-color:transparent;
+  box-shadow:0 3px 10px rgba(108,99,255,.3);}
+
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(15,15,35,.6);backdrop-filter:blur(5px);
+  z-index:500;display:none;align-items:flex-end;justify-content:center;}
+.mo.on{display:flex;}
+.md{background:var(--card);border-radius:24px 24px 0 0;padding:6px 20px 28px;
+  width:100%;max-width:480px;max-height:90vh;overflow-y:auto;
+  animation:su .3s cubic-bezier(.4,0,.2,1);}
+@keyframes su{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.mpill{width:38px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 14px;}
+.mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.mtitle{font-size:16px;font-weight:800;color:var(--dark);}
+.mclose{width:32px;height:32px;background:var(--bg);border:none;border-radius:50%;
+  cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.fr{margin-bottom:13px;}
+.fr label{display:block;font-size:11px;font-weight:700;color:var(--muted);
+  margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.fr input,.fr textarea,.fr select{width:100%;padding:11px 13px;border:1.5px solid var(--border);
+  border-radius:12px;font-size:14px;font-family:inherit;outline:none;
+  transition:border .2s;background:#fff;color:var(--text);}
+.fr input:focus,.fr textarea:focus,.fr select:focus{border-color:var(--c1);}
+.fr textarea{min-height:80px;resize:vertical;}
+
+/* DRAWER */
+.drw{position:fixed;bottom:0;left:0;right:0;background:var(--card);
+  border-radius:24px 24px 0 0;padding:6px 20px 28px;z-index:400;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 -8px 32px rgba(0,0,0,.15);}
+.drw.on{transform:translateY(0);}
+.drw-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:399;display:none;}
+.drw-ov.on{display:block;}
+.drw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px;}
+.drw-item{display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:12px 4px;border-radius:14px;cursor:pointer;border:none;background:var(--bg);font-family:inherit;}
+.drw-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.drw-label{font-size:10px;font-weight:700;color:var(--dark);text-align:center;line-height:1.3;}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--bnav)+16px);left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:#1E1B4B;color:#fff;padding:10px 18px;border-radius:20px;
+  font-size:13px;font-weight:600;z-index:600;opacity:0;
+  transition:all .3s;white-space:nowrap;pointer-events:none;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* CONFIRM */
+.cov{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);
+  z-index:700;display:none;align-items:center;justify-content:center;padding:20px;}
+.cov.on{display:flex;}
+.cbox{background:#fff;border-radius:22px;padding:24px;width:100%;max-width:320px;text-align:center;}
+.c-icon{font-size:44px;margin-bottom:10px;}
+.c-title{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:6px;}
+.c-msg{font-size:13px;color:var(--muted);line-height:1.5;}
+.cbtns{display:flex;gap:10px;margin-top:18px;}
+.cbtns button{flex:1;padding:12px;border-radius:12px;font-size:14px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.cc{background:var(--bg);color:var(--muted);}
+.cok{background:linear-gradient(135deg,var(--c2),#FF8E53);color:#fff;}
+
+/* LOADING / EMPTY */
+.lding{text-align:center;padding:40px 20px;color:var(--muted);}
+.spin{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--c1);
+  border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 12px;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.empt{text-align:center;padding:40px 20px;color:var(--muted);}
+.empt-i{font-size:48px;margin-bottom:12px;}
+.empt p{font-size:13px;font-weight:600;}
+.wm{text-align:center;padding:16px;color:var(--muted);font-size:10px;font-weight:500;}
+
+/* ADMIN ONLY */
+.admin-only{display:none;}
+body.is-admin .admin-only{display:block;}
+body.is-admin .bn.admin-only{display:flex;}
+
+
+
+
+/* HEADER ICON BUTTONS */
+.hdr-right{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.hic{
+  width:34px;height:34px;border-radius:10px;border:none;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;cursor:pointer;transition:background .18s,transform .15s;
+  flex-shrink:0;padding:0;
+}
+.hic:hover{background:var(--c1l);transform:scale(1.1);}
+.hic:active{transform:scale(.9);}
+.hic-logout{background:var(--c2l);font-size:16px;}
+.hic-logout:hover{background:#FFCCD5;}
+/* Make avatar inside .hic work */
+.hic .hdr-av{width:28px;height:28px;font-size:11px;pointer-events:none;box-shadow:none;}
+
+.hdr-chip{display:none;}/* hidden */
+
+
+/* HEADER ICON TOOLTIP */
+.hic{position:relative;}
+.hic::after{
+  content:attr(title);
+  position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#1E1B4B;color:#fff;font-size:10px;font-weight:700;
+  padding:4px 8px;border-radius:8px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .2s;z-index:999;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.hic:hover::after{opacity:1;}
+
+</style>
+<script>
+// SYNC FUNCTIONS — defined in <head> so available immediately when onclick fires
+function switchAuthTab(t){
+  var tabs=['login','register','reset'];
+  document.querySelectorAll('.atab').forEach(function(el,i){el.classList.toggle('on',tabs[i]===t);});
+  document.querySelectorAll('.af').forEach(function(f){f.classList.remove('on');});
+  var el=document.getElementById('form-'+t);if(el)el.classList.add('on');
+}
+function closeModal(id){var el=document.getElementById(id);if(el)el.classList.remove('on');}
+// Stubs — real implementations load after DOM
+function doLogin(){if(window._doLogin)window._doLogin();else alert('Aplikasi belum siap, coba lagi.');}
+function doRegister(){if(window._doRegister)window._doRegister();else alert('Aplikasi belum siap, coba lagi.');}
+function doLogout(){if(window._doLogout)window._doLogout();}
+function navigate(pg){if(window._navigate)window._navigate(pg);}
+function fabAction(){if(window._fabAction)window._fabAction();}
+function filterGuru(q){if(window._filterGuru)window._filterGuru(q);}
+function swMateri(f,el){if(window._swMateri)window._swMateri(f,el);}
+function swArsip(f,el){if(window._swArsip)window._swArsip(f,el);}
+function saveMateri(){if(window._saveMateri)window._saveMateri();}
+function editMateri(d){if(window._editMateri)window._editMateri(d);}
+function delMateri(id){if(window._delMateri)window._delMateri(id);}
+function saveForum(){if(window._saveForum)window._saveForum();}
+function openReplyModal(id){if(window._openReplyModal)window._openReplyModal(id);}
+function saveReply(){if(window._saveReply)window._saveReply();}
+function delForum(id){if(window._delForum)window._delForum(id);}
+function openAgendaModal(){if(window._openAgendaModal)window._openAgendaModal();}
+function editAgenda(d){if(window._editAgenda)window._editAgenda(d);}
+function editAgendaById(id){if(window._editAgendaById)window._editAgendaById(id);}
+function saveAgenda(){if(window._saveAgenda)window._saveAgenda();}
+function delAgenda(id){if(window._delAgenda)window._delAgenda(id);}
+function openArsipModal(){if(window._openArsipModal)window._openArsipModal();}
+function editArsip(d){if(window._editArsip)window._editArsip(d);}
+function saveArsip(){if(window._saveArsip)window._saveArsip();}
+function delArsip(id){if(window._delArsip)window._delArsip(id);}
+function openPengModal(){if(window._openPengModal)window._openPengModal();}
+function editPeng(d){if(window._editPeng)window._editPeng(d);}
+function savePeng(){if(window._savePeng)window._savePeng();}
+function delPeng(id){if(window._delPeng)window._delPeng(id);}
+function openIntegModal(){if(window._openIntegModal)window._openIntegModal();}
+function editInteg(d){if(window._editInteg)window._editInteg(d);}
+function saveInteg(){if(window._saveInteg)window._saveInteg();}
+function delInteg(id){if(window._delInteg)window._delInteg(id);}
+function saveProfile(){if(window._saveProfile)window._saveProfile();}
+function changePassword(){if(window._changePassword)window._changePassword();}
+function setAdm(id,v){if(window._setAdm)window._setAdm(id,v);}
+function openResetPw(id,n){if(window._openResetPw)window._openResetPw(id,n);}
+function doResetPw(){if(window._doResetPw)window._doResetPw();}
+function confRes(v){if(window._confRes)window._confRes(v);}
+function doRequestReset(){if(window._doRequestReset)window._doRequestReset();}
+function fillAdmin(){
+  document.getElementById('login-email').value='unknown@mgmp.id';
+  document.getElementById('login-password').value='123456';
+}
+</script>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CONFIRM -->
+<div class="cov" id="cov">
+  <div class="cbox">
+    <div class="c-icon" id="c-icon">⚠️</div>
+    <div class="c-title" id="c-title">Yakin?</div>
+    <div class="c-msg" id="c-msg">Tindakan ini tidak bisa dibatalkan.</div>
+    <div class="cbtns">
+      <button class="cc" onclick="confRes(false)">Batal</button>
+      <button class="cok" id="cok-btn" onclick="confRes(true)">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="alogo">
+    <div class="alogo-icon">🎓</div>
+    <h1>MGMP Bahasa Inggris</h1>
+    <p>Musyawarah Guru Mata Pelajaran</p>
+  </div>
+  <div class="acard">
+    <div class="atabs">
+      <div class="atab on" onclick="switchAuthTab('login')">🔐 Masuk</div>
+      <div class="atab" onclick="switchAuthTab('register')">📝 Daftar</div>
+      <div class="atab" onclick="switchAuthTab('reset')">🔑 Reset</div>
+    </div>
+    <div id="form-login" class="af on">
+      <div class="fg"><label>Email</label><input type="email" id="login-email" placeholder="email@example.com"></div>
+      <div class="fg"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
+      <button class="abtn" onclick="doLogin()">🔐 Masuk Sekarang</button>
+      <p class="amsg" id="login-msg"></p>
+
+    </div>
+    <div id="form-register" class="af">
+      <div class="fg"><label>Nama Lengkap</label><input type="text" id="reg-name" placeholder="Nama lengkap"></div>
+      <div class="fg"><label>Email</label><input type="email" id="reg-email" placeholder="email@example.com"></div>
+      <div class="fg"><label>Asal Sekolah</label><input type="text" id="reg-school" placeholder="Nama sekolah"></div>
+      <div class="fg"><label>No. HP / WA</label><input type="text" id="reg-phone" placeholder="08xxxxxxxxxx"></div>
+      <div class="fg"><label>Password</label><input type="password" id="reg-password" placeholder="Min. 6 karakter"></div>
+      <button class="abtn" onclick="doRegister()">📝 Daftar Anggota</button>
+      <p class="amsg" id="reg-msg"></p>
+    </div>
+    <div id="form-reset" class="af">
+      <p style="color:rgba(255,255,255,.7);font-size:13px;margin-bottom:14px;line-height:1.6">Masukkan nama dan email Anda. Pengajuan reset password akan dikirim ke Admin untuk diproses.</p>
+      <div class="fg"><label>Nama Lengkap</label><input type="text" id="rp-name" placeholder="Nama lengkap Anda"></div>
+      <div class="fg"><label>Email Akun</label><input type="email" id="rp-email" placeholder="email@example.com"></div>
+      <div class="fg"><label>Alasan / Keterangan</label><input type="text" id="rp-reason" placeholder="cth: lupa password lama"></div>
+      <button class="abtn" style="background:linear-gradient(135deg,#F59E0B,#FCD34D)" onclick="doRequestReset()">📨 Kirim Pengajuan</button>
+      <p class="amsg" id="reset-req-msg"></p>
+    </div>
+  </div>
+  <p class="awm">Developed & Supported by D.D Candra 2026</p>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header class="hdr">
+    <div class="hdr-left">
+<div class="hdr-icon" id="hdr-icon">🏠</div>
+      <div class="hdr-title" id="hdr-title">Dashboard</div>
+    </div>
+    <div class="hdr-right">
+      <button class="hic" onclick="navigate('pengumuman')" title="Pengumuman">📢</button>
+      <button class="hic" onclick="navigate('arsip')" title="Arsip Dokumen">📁</button>
+      <button class="hic" onclick="navigate('integrasi')" title="Integrasi Kinerja">🔗</button>
+      <button class="hic" onclick="navigate('profil')" id="hdr-prof-btn" title="Profil Saya">
+        <div class="hdr-av" id="hdr-av">?</div>
+      </button>
+      <button class="hic hic-logout" onclick="doLogout()" title="Keluar">🚪</button>
+    </div>
+  </header>
+
+  <div class="scroll" id="scroll">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page on">
+      <div class="hero">
+        <div class="hero-hi">Selamat datang 👋</div>
+        <div class="hero-name" id="hero-name">...</div>
+        <div class="hero-chip" id="hero-role">🎓 Guru</div>
+      </div>
+      <div class="stats">
+        <div class="scard" data-e="👥"><div class="snum" id="s-guru">0</div><div class="slbl">Anggota</div></div>
+        <div class="scard" data-e="📅"><div class="snum" id="s-agenda">0</div><div class="slbl">Agenda</div></div>
+        <div class="scard" data-e="📚"><div class="snum" id="s-materi">0</div><div class="slbl">Materi</div></div>
+        <div class="scard" data-e="💬"><div class="snum" id="s-forum">0</div><div class="slbl">Diskusi</div></div>
+      </div>
+      <div class="sec-hdr"><div class="sec-title">📢 Pengumuman</div><div class="see-all" onclick="navigate('pengumuman')">Lihat Semua</div></div>
+      <div id="d-ann"></div>
+      <div class="sec-hdr"><div class="sec-title">📅 Agenda Mendatang</div></div>
+      <div class="card"><div id="d-ag"></div></div>
+      <div class="wm">Developed & Supported by D.D Candra 2026</div>
+    </div>
+
+    <!-- GURU -->
+    <div id="page-guru" class="page">
+      <div class="pg-hdr" data-emoji="👥" style="background:linear-gradient(135deg,#10B981,#3B82F6)"><h2>👥 Data Guru</h2><p>Daftar anggota MGMP Bahasa Inggris</p></div>
+      <div class="srch"><span>🔍</span><input type="text" placeholder="Cari nama atau sekolah..." oninput="filterGuru(this.value)" id="guru-srch"></div>
+      <div style="height:10px"></div>
+      <div id="guru-list"></div>
+    </div>
+
+    <!-- MATERI -->
+    <div id="page-materi" class="page">
+      <div class="pg-hdr" data-emoji="📚" style="background:linear-gradient(135deg,#F59E0B,#FBBF24)"><h2>📚 Bank Materi</h2><p>Modul, RPP/ATP & Soal Ujian</p></div>
+      <div class="tabs">
+        <button class="tbtn on" onclick="swMateri('all',this)">🗂 Semua</button>
+        <button class="tbtn" onclick="swMateri('modul',this)">📖 Modul</button>
+        <button class="tbtn" onclick="swMateri('rpp',this)">📝 RPP/ATP</button>
+        <button class="tbtn" onclick="swMateri('soal',this)">📋 Soal</button>
+      </div>
+      <div style="height:8px"></div>
+      <div id="materi-list"></div>
+    </div>
+
+    <!-- FORUM -->
+    <div id="page-forum" class="page">
+      <div class="pg-hdr" data-emoji="💬" style="background:linear-gradient(135deg,#FF6584,#FF8E53)"><h2>💬 Forum Diskusi</h2><p>Tanya jawab & sharing antar guru</p></div>
+      <div style="height:12px"></div>
+      <div id="forum-list"></div>
+    </div>
+
+    <!-- AGENDA -->
+    <div id="page-agenda" class="page">
+      <div class="pg-hdr" data-emoji="📅" style="background:linear-gradient(135deg,#43C6AC,#4E9FFF)"><h2>📅 Agenda Kegiatan</h2><p>Jadwal kegiatan MGMP</p></div>
+      <div style="height:12px"></div>
+      <div id="agenda-list"></div>
+    </div>
+
+    <!-- PENGUMUMAN -->
+    <div id="page-pengumuman" class="page">
+      <div class="pg-hdr" data-emoji="📢" style="background:linear-gradient(135deg,#F59E0B,#FCD34D)"><h2>📢 Pengumuman</h2><p>Info & pengumuman resmi</p></div>
+      <div style="height:12px"></div>
+      <div id="peng-list"></div>
+    </div>
+
+    <!-- ARSIP -->
+    <div id="page-arsip" class="page">
+      <div class="pg-hdr" data-emoji="📁" style="background:linear-gradient(135deg,#3B82F6,#6C63FF)"><h2>📁 Arsip Dokumen</h2><p>Notulen, absensi & laporan</p></div>
+      <div class="tabs">
+        <button class="tbtn on" onclick="swArsip('all',this)">🗂 Semua</button>
+        <button class="tbtn" onclick="swArsip('notulen',this)">📝 Notulen</button>
+        <button class="tbtn" onclick="swArsip('absensi',this)">✅ Absensi</button>
+        <button class="tbtn" onclick="swArsip('laporan',this)">📊 Laporan</button>
+      </div>
+      <div style="height:8px"></div>
+      <div id="arsip-list"></div>
+    </div>
+
+    <!-- INTEGRASI -->
+    <div id="page-integrasi" class="page">
+      <div class="pg-hdr" data-emoji="🔗" style="background:linear-gradient(135deg,#A855F7,#6C63FF)"><h2>🔗 Integrasi Kinerja</h2><p>Akses cepat layanan ASN</p></div>
+      <div class="ig-grid" id="ig-grid"></div>
+      <div class="admin-only" style="padding:0 16px 12px"><button class="btn bp bfull" onclick="openIntegModal()">➕ Tambah Link</button></div>
+    </div>
+
+    <!-- PROFIL -->
+    <div id="page-profil" class="page">
+      <div class="ph"><div class="ph-av" id="ph-av">?</div><div class="ph-name" id="ph-name">...</div><div class="ph-role" id="ph-role">🎓 Anggota</div></div>
+      <div style="padding:14px">
+        <div class="card" style="margin:0 0 12px">
+          <div style="font-size:14px;font-weight:800;color:var(--dark);margin-bottom:12px">✏️ Edit Profil</div>
+          <div class="fr"><label>Nama Lengkap</label><input type="text" id="p-nama"></div>
+          <div class="fr"><label>Asal Sekolah</label><input type="text" id="p-sekolah"></div>
+          <div class="fr"><label>No. HP</label><input type="text" id="p-hp"></div>
+          <button class="btn bp bfull" onclick="saveProfile()">💾 Simpan Profil</button>
+        </div>
+        <div class="card" style="margin:0 0 12px">
+          <div style="font-size:14px;font-weight:800;color:var(--dark);margin-bottom:12px">🔑 Ubah Password</div>
+          <div class="fr"><label>Password Baru</label><input type="password" id="pw-new" placeholder="Min. 6 karakter"></div>
+          <div class="fr"><label>Konfirmasi</label><input type="password" id="pw-conf" placeholder="Ulangi password"></div>
+          <button class="btn bo bfull" onclick="changePassword()">🔑 Ubah Password</button>
+          <p id="pw-msg" style="text-align:center;font-size:12px;margin-top:8px;min-height:18px"></p>
+        </div>
+        <button class="btn br bfull" onclick="doLogout()">🚪 Keluar</button>
+      </div>
+      <div class="wm">Developed & Supported by D.D Candra 2026</div>
+    </div></div><!-- scroll -->
+
+
+
+  <!-- BOTTOM NAV -->
+  <nav class="bnav">
+    <button class="bn on" id="bn-dashboard" onclick="navigate('dashboard')"><span class="bn-i">🏠</span><span class="bn-l">Home</span></button>
+    <button class="bn" id="bn-guru" onclick="navigate('guru')"><span class="bn-i">👥</span><span class="bn-l">Guru</span></button>
+    <button class="bn" id="bn-materi" onclick="navigate('materi')"><span class="bn-i">📚</span><span class="bn-l">Materi</span></button>
+    <button class="bn" id="bn-forum" onclick="navigate('forum')"><span class="bn-i">💬</span><span class="bn-l">Forum</span></button>
+    <button class="bn" id="bn-agenda" onclick="navigate('agenda')"><span class="bn-i">📅</span><span class="bn-l">Agenda</span></button>
+    <button class="bn" id="bn-profil" onclick="navigate('profil')"><span class="bn-i">👤</span><span class="bn-l">Profil</span></button>
+  </nav>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fab" onclick="fabAction()">➕</button>
+
+<!-- MODALS -->
+<div class="mo" id="mo-materi">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle" id="mo-materi-title">📚 Tambah Materi</div><button class="mclose" onclick="closeModal('mo-materi')">✕</button></div>
+    <input type="hidden" id="m-id">
+    <div class="fr"><label>Judul</label><input type="text" id="m-judul" placeholder="Judul materi..."></div>
+    <div class="fr"><label>Kategori</label><select id="m-kat"><option value="modul">📖 Modul Ajar</option><option value="rpp">📝 RPP / ATP</option><option value="soal">📋 Soal Ujian</option></select></div>
+    <div class="fr"><label>Kelas</label><input type="text" id="m-kelas" placeholder="cth: Kelas 7, 8, 9"></div>
+    <div class="fr"><label>Deskripsi</label><textarea id="m-desk" placeholder="Deskripsi singkat..."></textarea></div>
+    <div class="fr"><label>🔗 Link File</label><input type="text" id="m-link" placeholder="https://drive.google.com/..."></div>
+    <button class="btn bp bfull" onclick="saveMateri()">💾 Simpan</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-forum">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle">💬 Buat Diskusi</div><button class="mclose" onclick="closeModal('mo-forum')">✕</button></div>
+    <div class="fr"><label>Topik</label><input type="text" id="f-topik" placeholder="Judul diskusi..."></div>
+    <div class="fr"><label>Isi Diskusi</label><textarea id="f-isi" placeholder="Tuliskan pertanyaan atau pendapat..."></textarea></div>
+    <button class="btn bp bfull" onclick="saveForum()">💬 Posting</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-reply">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle">↩️ Balas Diskusi</div><button class="mclose" onclick="closeModal('mo-reply')">✕</button></div>
+    <input type="hidden" id="rep-pid">
+    <div class="fr"><label>Balasan</label><textarea id="r-isi" placeholder="Tulis balasan..."></textarea></div>
+    <button class="btn bp bfull" onclick="saveReply()">✈️ Kirim Balasan</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-agenda">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle" id="mo-agenda-title">📅 Tambah Agenda</div><button class="mclose" onclick="closeModal('mo-agenda')">✕</button></div>
+    <input type="hidden" id="ag-id">
+    <div class="fr"><label>Judul Kegiatan</label><input type="text" id="ag-judul" placeholder="Nama kegiatan..."></div>
+    <div class="fr"><label>Tanggal</label><input type="date" id="ag-tgl"></div>
+    <div class="fr"><label>Waktu</label><input type="time" id="ag-wkt"></div>
+    <div class="fr"><label>Lokasi</label><input type="text" id="ag-lok" placeholder="Lokasi / online"></div>
+    <div class="fr"><label>Keterangan</label><textarea id="ag-ket" placeholder="Info tambahan..."></textarea></div>
+    <button class="btn bg bfull" onclick="saveAgenda()">💾 Simpan</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-arsip">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle" id="mo-arsip-title">📁 Tambah Arsip</div><button class="mclose" onclick="closeModal('mo-arsip')">✕</button></div>
+    <input type="hidden" id="ar-id">
+    <div class="fr"><label>Nama Dokumen</label><input type="text" id="ar-nama" placeholder="Nama dokumen..."></div>
+    <div class="fr"><label>Kategori</label><select id="ar-kat"><option value="notulen">📝 Notulen Rapat</option><option value="absensi">✅ Absensi</option><option value="laporan">📊 Laporan MGMP</option></select></div>
+    <div class="fr"><label>Tanggal</label><input type="date" id="ar-tgl"></div>
+    <div class="fr"><label>🔗 Link File</label><input type="text" id="ar-link" placeholder="https://drive.google.com/..."></div>
+    <div class="fr"><label>Keterangan</label><input type="text" id="ar-ket" placeholder="Keterangan singkat..."></div>
+    <button class="btn bp bfull" onclick="saveArsip()">💾 Simpan</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-peng">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle" id="mo-peng-title">📢 Tambah Pengumuman</div><button class="mclose" onclick="closeModal('mo-peng')">✕</button></div>
+    <input type="hidden" id="peng-id">
+    <div class="fr"><label>Judul</label><input type="text" id="peng-judul" placeholder="Judul pengumuman..."></div>
+    <div class="fr"><label>Isi</label><textarea id="peng-isi" placeholder="Isi pengumuman..."></textarea></div>
+    <button class="btn bo bfull" onclick="savePeng()">📢 Simpan</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-integ">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle" id="mo-integ-title">🔗 Tambah Link</div><button class="mclose" onclick="closeModal('mo-integ')">✕</button></div>
+    <input type="hidden" id="ai-id">
+    <div class="fr"><label>Nama Layanan</label><input type="text" id="ai-nama" placeholder="cth: PMM, E-Kinerja"></div>
+    <div class="fr"><label>URL</label><input type="text" id="ai-url" placeholder="https://..."></div>
+    <div class="fr"><label>Emoji</label><input type="text" id="ai-ikon" placeholder="🎯" maxlength="5"></div>
+    <div class="fr"><label>Warna Background</label><input type="color" id="ai-color" value="#EEF0FF" style="height:44px;cursor:pointer;border-radius:10px;"></div>
+    <button class="btn bv bfull" onclick="saveInteg()">💾 Simpan</button>
+  </div>
+</div>
+
+<div class="mo" id="mo-resetpw">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle">🔑 Reset Password Anggota</div><button class="mclose" onclick="closeModal('mo-resetpw')">✕</button></div>
+    <input type="hidden" id="rpw-uid">
+    <div class="fr"><label>Nama Anggota</label><input type="text" id="rpw-name" readonly style="background:#f8f9ff;color:var(--muted)"></div>
+    <div class="fr"><label>Password Baru</label><input type="password" id="rpw-pw" placeholder="Min. 6 karakter"></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">💡 Password baru akan langsung aktif setelah disimpan.</p>
+    <button class="btn br bfull" onclick="doResetPw()">🔑 Reset Password Sekarang</button>
+    <p id="rpw-msg" style="text-align:center;font-size:12px;margin-top:8px;min-height:18px"></p>
+  </div>
+</div>
+
+<script>
+// CONFIG
+const SURL='https://foxuzxcjzyrzrycrfvgf.supabase.co';
+const SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZveHV6eGNqenlyenJ5Y3JmdmdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDUzODYsImV4cCI6MjA5MjAyMTM4Nn0.tEY7HL40ep_18WLn96viUEhahhbxOelHdvxsNlxvJMg';
+const sb=window.supabase.createClient(SURL,SKEY);
+
+// STATE
+let CU=null,CP=null,allGuru=[],mFil='all',aFil='all',confCb=null,curPage='dashboard';
+const MN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+const AVC=['#6C63FF','#FF6584','#10B981','#F59E0B','#3B82F6','#A855F7','#EF4444','#0891B2'];
+
+// UTILS
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function val(id){return(document.getElementById(id)?.value||'').trim();}
+function sv(id,v){var e=document.getElementById(id);if(e)e.value=v||'';}
+function clr(...ids){ids.forEach(id=>{var e=document.getElementById(id);if(e)e.value='';})}
+function fd(dt){if(!dt)return'';var d=new Date(dt);return d.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});}
+function avc(n){return AVC[(n||'?').charCodeAt(0)%AVC.length];}
+function ini(n){return(n||'?').split(' ').map(x=>x[0]).join('').substring(0,2).toUpperCase();}
+function toast(msg,ms=2500){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),ms);}
+function confirm2(title,msg,okTxt='Hapus',icon='🗑️'){
+  return new Promise(res=>{
+    confCb=res;
+    document.getElementById('c-icon').textContent=icon;
+    document.getElementById('c-title').textContent=title;
+    document.getElementById('c-msg').textContent=msg;
+    document.getElementById('cok-btn').textContent=okTxt;
+    document.getElementById('cov').classList.add('on');
+  });
+}
+function confRes(v){document.getElementById('cov').classList.remove('on');if(confCb)confCb(v);confCb=null;}
+function loading(){return'<div class="lding"><div class="spin"></div><p>Memuat...</p></div>';}
+function empty(icon,msg){return`<div class="empt"><div class="empt-i">${icon}</div><p>${msg}</p></div>`;}
+
+// INIT
+async function init(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){await loadCP(session.user);showApp();}else{
+    showAuth();
+  }
+  sb.auth.onAuthStateChange(async(ev,sess)=>{
+    if(ev==='SIGNED_IN'&&sess){await loadCP(sess.user);showApp();}
+    else if(ev==='SIGNED_OUT')showAuth();
+  });
+}
+async function loadCP(user){
+  CU=user;
+  const{data}=await sb.from('profiles').select('*').eq('id',user.id).single();
+  CP=data;
+  document.body.classList.toggle('is-admin',CP?.role==='admin');
+}
+
+// AUTH
+function showAuth(){document.getElementById('auth-screen').style.display='flex';document.getElementById('app').style.display='none';}
+function showApp(){
+  document.getElementById('auth-screen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  var name=CP?.full_name||CU?.email||'?';
+  var col=avc(name);
+  var av=document.getElementById('hdr-av');
+  av.textContent=ini(name);av.style.background=`linear-gradient(135deg,${col},${col}99)`;
+  document.getElementById('hero-name').textContent=name;
+  document.getElementById('hero-role').textContent=CP?.role==='admin'?'👑 Pengurus / Admin':'🎓 Guru / Anggota';
+  navigate(sessionStorage.getItem('mgmp-page')||'dashboard');
+}
+async function doRequestReset(){
+  var name=val('rp-name'),email=val('rp-email'),reason=val('rp-reason');
+  var msg=document.getElementById('reset-req-msg');
+  if(!name||!email){msg.textContent='❌ Nama dan email wajib diisi.';msg.className='amsg err';return;}
+  msg.textContent='⏳ Mengirim pengajuan...';msg.className='amsg';
+  var{error}=await sb.from('reset_requests').insert([{
+    new_password:'[REQUESTED]',status:'requested',
+    user_id:null,requested_by:null,
+    notes:name+' | '+email+' | '+reason
+  }]);
+  if(error){msg.textContent='❌ Gagal: '+error.message;msg.className='amsg err';}
+  else{msg.textContent='✅ Pengajuan terkirim! Admin akan memproses segera.';msg.className='amsg ok';}
+}
+window._doRequestReset=doRequestReset;
+async function doLogin(){
+  var emailRaw=val('login-email'),pw=document.getElementById('login-password').value;
+  var msg=document.getElementById('login-msg');
+  // Jika tidak mengandung '@', tambahkan domain default
+  var email=emailRaw.includes('@')?emailRaw:emailRaw+'@mgmp.id';
+  msg.textContent='⏳ Memproses...';msg.className='amsg';
+  var{error}=await sb.auth.signInWithPassword({email,password:pw});
+  if(error){msg.textContent='❌ Email atau password salah.';msg.className='amsg err';}
+  else{msg.textContent='✅ Berhasil masuk!';msg.className='amsg ok';}
+}
+async function doRegister(){
+  var name=val('reg-name'),email=val('reg-email'),school=val('reg-school'),phone=val('reg-phone'),pw=document.getElementById('reg-password').value;
+  var msg=document.getElementById('reg-msg');
+  if(!name||!email||!school||!pw){msg.textContent='❌ Semua field wajib diisi.';msg.className='amsg err';return;}
+  if(pw.length<6){msg.textContent='❌ Password min. 6 karakter.';msg.className='amsg err';return;}
+  msg.textContent='⏳ Mendaftar...';msg.className='amsg';
+  var{data,error}=await sb.auth.signUp({email,password:pw,options:{data:{full_name:name}}});
+  if(error){msg.textContent='❌ '+error.message;msg.className='amsg err';return;}
+  if(data.user)await sb.from('profiles').upsert({id:data.user.id,full_name:name,school,phone,role:'guru',email});
+  msg.textContent='✅ Daftar berhasil! Silakan masuk.';msg.className='amsg ok';
+  setTimeout(()=>switchAuthTab('login'),2000);
+}
+async function doLogout(){
+  var ok=await confirm2('Keluar Aplikasi','Yakin ingin keluar?','Keluar','🚪');
+  if(ok)await sb.auth.signOut();
+}
+
+// NAV
+const pgCfg={
+  dashboard:{i:'🏠',t:'Dashboard'},guru:{i:'👥',t:'Data Guru'},
+  materi:{i:'📚',t:'Bank Materi'},forum:{i:'💬',t:'Forum Diskusi'},
+  agenda:{i:'📅',t:'Agenda Kegiatan'},pengumuman:{i:'📢',t:'Pengumuman'},
+  arsip:{i:'📁',t:'Arsip Dokumen'},integrasi:{i:'🔗',t:'Integrasi Kinerja'},
+  profil:{i:'👤',t:'Profil Saya'},
+};
+const fabCfg={
+  materi:{show:true,action:()=>openMateriModal()},
+  forum:{show:true,action:()=>openForumModal()},
+  agenda:{show:true,adminOnly:true,action:()=>openAgendaModal()},
+  arsip:{show:true,action:()=>openArsipModal()},
+  pengumuman:{show:true,adminOnly:true,action:()=>openPengModal()}
+};
+var fabAct=null;
+function navigate(pg){
+  sessionStorage.setItem('mgmp-page',pg);curPage=pg;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  var el=document.getElementById('page-'+pg);if(el)el.classList.add('on');
+  var cfg=pgCfg[pg]||{i:'📄',t:pg};
+  document.getElementById('hdr-icon').textContent=cfg.i;
+  document.getElementById('hdr-title').textContent=cfg.t;
+  document.getElementById('scroll').scrollTop=0;
+  // bnav
+  ['dashboard','guru','materi','forum','agenda'].forEach(p=>{
+    var b=document.getElementById('bn-'+p);if(b)b.classList.toggle('on',p===pg);
+  });
+  // fab
+  var fc=fabCfg[pg];
+  var fab=document.getElementById('fab');
+  if(fc&&fc.show&&(!fc.adminOnly||CP?.role==='admin')){
+    fab.style.display='flex';fabAct=fc.action;
+  }else{fab.style.display='none';fabAct=null;}
+  loadPgData(pg);
+  // update bottom nav (include profil)
+  ['dashboard','guru','materi','forum','agenda','profil'].forEach(function(p){
+    var b=document.getElementById('bn-'+p);if(b)b.classList.toggle('on',p===pg);
+  });
+  // highlight header icon buttons
+  document.querySelectorAll('.hic').forEach(function(b){
+    var oc=b.getAttribute('onclick')||'';
+    var isAct=oc.indexOf("navigate('"+pg+"')")>-1;
+    b.style.background=isAct?'var(--c1l)':'';
+    b.style.color=isAct?'var(--c1)':'';
+  });
+}
+function fabAction(){if(fabAct)fabAct();}
+async function loadPgData(pg){
+  if(pg==='dashboard')await loadDash();
+  else if(pg==='guru')await loadGuru();
+  else if(pg==='materi')await loadMateri();
+  else if(pg==='forum')await loadForum();
+  else if(pg==='agenda')await loadAgenda();
+  else if(pg==='pengumuman')await loadPeng();
+  else if(pg==='arsip')await loadArsip();
+  else if(pg==='integrasi')await loadInteg();
+  else if(pg==='profil')loadProfil();
+}
+
+// Drawer stubs (drawer removed)
+function openDrw(){}
+function closeDrw(){}
+
+// DASHBOARD
+async function loadDash(){
+  var[g,ag,m,f]=await Promise.all([
+    sb.from('profiles').select('*',{count:'exact',head:true}),
+    sb.from('agenda').select('*',{count:'exact',head:true}),
+    sb.from('materi').select('*',{count:'exact',head:true}),
+    sb.from('forum_posts').select('*',{count:'exact',head:true})
+  ]);
+  document.getElementById('s-guru').textContent=g.count||0;
+  document.getElementById('s-agenda').textContent=ag.count||0;
+  document.getElementById('s-materi').textContent=m.count||0;
+  document.getElementById('s-forum').textContent=f.count||0;
+  var{data:anns}=await sb.from('pengumuman').select('*').order('created_at',{ascending:false}).limit(3);
+  var dAnn=document.getElementById('d-ann');
+  if(!anns?.length)dAnn.innerHTML='<div class="empt" style="padding:16px"><div class="empt-i" style="font-size:32px">📭</div><p>Belum ada pengumuman</p></div>';
+  else dAnn.innerHTML=anns.map(a=>`<div class="ann"><div class="ann-title">${esc(a.judul)}</div><div class="ann-body">${esc(a.isi)}</div><div class="ann-date">📅 ${fd(a.created_at)}</div></div>`).join('');
+  var{data:ags}=await sb.from('agenda').select('*').gte('tanggal',new Date().toISOString().split('T')[0]).order('tanggal').limit(4);
+  var dAg=document.getElementById('d-ag');
+  if(!ags?.length)dAg.innerHTML='<div class="empt" style="padding:12px"><div class="empt-i" style="font-size:28px">📅</div><p>Tidak ada agenda mendatang</p></div>';
+  else dAg.innerHTML=ags.map(a=>`<div class="ag-mini"><div class="ag-dot"></div><div class="ag-mini-title">${esc(a.judul)}</div><div class="ag-mini-date">${fd(a.tanggal)}</div></div>`).join('');
+}
+
+// GURU
+async function loadGuru(){
+  document.getElementById('guru-list').innerHTML=loading();
+  var{data}=await sb.from('profiles').select('*').order('full_name');
+  allGuru=data||[];renderGuru(allGuru);
+  sv('guru-srch','');
+}
+function filterGuru(q){renderGuru(allGuru.filter(g=>(g.full_name||'').toLowerCase().includes(q.toLowerCase())||(g.school||'').toLowerCase().includes(q.toLowerCase())));}
+function renderGuru(list){
+  var el=document.getElementById('guru-list');
+  if(!list.length){el.innerHTML=empty('👥','Tidak ada guru ditemukan');return;}
+  var isAdm=CP?.role==='admin';
+  el.innerHTML=list.map(g=>{
+    var col=avc(g.full_name);var av=ini(g.full_name);
+    return`<div class="gc">
+      <div class="gca" style="background:linear-gradient(135deg,${col},${col}88)">${av}</div>
+      <div class="gc-info">
+        <div class="gc-name">${esc(g.full_name||'-')}</div>
+        <div class="gc-school">🏫 ${esc(g.school||'-')}${g.phone?'&nbsp;|&nbsp;📱'+esc(g.phone):''}</div>
+        <div class="gc-badges"><span class="bdg ${g.role==='admin'?'bdg-adm':'bdg-p'}">${g.role==='admin'?'👑 Admin':'🎓 Guru'}</span></div>
+      </div>
+      ${isAdm?`<div class="gc-acts">
+        <button class="btn bo bsm" onclick="openResetPw('${g.id}','${esc(g.full_name)}')">🔑</button>
+        <button class="btn bsm ${g.role!=='admin'?'bv':'bline'}" onclick="setAdm('${g.id}',${g.role!=='admin'})">${g.role!=='admin'?'👑':'↩️'}</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// MATERI
+async function loadMateri(){
+  var el=document.getElementById('materi-list');el.innerHTML=loading();
+  var q=sb.from('materi').select('*').order('created_at',{ascending:false});
+  if(mFil!=='all')q=q.eq('kategori',mFil);
+  var{data}=await q;
+  if(!data?.length){el.innerHTML=empty('📚','Belum ada materi');return;}
+  var icons={modul:{e:'📖',bg:'#FEF3C7'},rpp:{e:'📝',bg:'#EEF0FF'},soal:{e:'📋',bg:'#D1FAE5'}};
+  el.innerHTML=data.map(m=>{
+    var ic=icons[m.kategori]||{e:'📄',bg:'#f0f0f0'};
+    var canDel=CP?.role==='admin'||m.uploader_id===CU?.id;
+    return`<div class="dc">
+      <div class="dc-icon" style="background:${ic.bg}">${ic.e}</div>
+      <div class="dc-body">
+        <div class="dc-title">${esc(m.judul)}</div>
+        <div class="dc-meta">${m.kelas?'🏫 '+esc(m.kelas)+' · ':''}<span class="bdg bdg-o">${m.kategori}</span></div>
+        ${m.deskripsi?`<div class="dc-meta" style="margin-top:4px">${esc(m.deskripsi)}</div>`:''}
+        <div class="dc-acts">
+          ${m.link?`<a href="${esc(m.link)}" target="_blank" class="btn bg bsm">🔗 Buka</a>`:''}
+          <button class="btn bo bsm" onclick='editMateri(${JSON.stringify({id:m.id,judul:m.judul,kat:m.kategori,kelas:m.kelas,desk:m.deskripsi,link:m.link})})'>✏️ Edit</button>
+          ${canDel?`<button class="btn br bsm" onclick="delMateri('${m.id}')">🗑️ Hapus</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function swMateri(f,el){mFil=f;document.querySelectorAll('#page-materi .tbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');loadMateri();}
+function openMateriModal(){sv('m-id','');clr('m-judul','m-kelas','m-desk','m-link');sv('m-kat','modul');document.getElementById('mo-materi-title').textContent='📚 Tambah Materi';document.getElementById('mo-materi').classList.add('on');}
+function editMateri(d){sv('m-id',d.id);sv('m-judul',d.judul||'');sv('m-kat',d.kat||'modul');sv('m-kelas',d.kelas||'');sv('m-desk',d.desk||'');sv('m-link',d.link||'');document.getElementById('mo-materi-title').textContent='✏️ Edit Materi';document.getElementById('mo-materi').classList.add('on');}
+async function saveMateri(){
+  var id=val('m-id');
+  var d={judul:val('m-judul'),kategori:val('m-kat'),kelas:val('m-kelas'),deskripsi:val('m-desk'),link:val('m-link'),uploader_id:CU.id,uploader_name:CP?.full_name};
+  if(id)await sb.from('materi').update(d).eq('id',id);else await sb.from('materi').insert([d]);
+  closeModal('mo-materi');loadMateri();toast(id?'✅ Materi diperbarui!':'✅ Materi ditambahkan!');
+}
+async function delMateri(id){var ok=await confirm2('Hapus Materi','Yakin hapus materi ini?');if(ok){await sb.from('materi').delete().eq('id',id);loadMateri();toast('🗑️ Materi dihapus');}}
+
+// FORUM
+async function loadForum(){
+  var el=document.getElementById('forum-list');el.innerHTML=loading();
+  var{data:posts}=await sb.from('forum_posts').select('*').order('created_at',{ascending:false});
+  if(!posts?.length){el.innerHTML=empty('💬','Belum ada diskusi');return;}
+  var ids=posts.map(p=>p.id);
+  var{data:reps}=await sb.from('forum_replies').select('*').in('post_id',ids);
+  el.innerHTML=posts.map(p=>{
+    var rs=(reps||[]).filter(r=>r.post_id===p.id);
+    var col=avc(p.author_name);var av=ini(p.author_name);
+    var canDel=CP?.role==='admin'||p.author_id===CU?.id;
+    return`<div class="fc">
+      <div class="fc-top"><div class="fc-av" style="background:${col}">${av}</div><div><div class="fc-author">${esc(p.author_name||'Anonim')}</div><div class="fc-time">📅 ${fd(p.created_at)}</div></div></div>
+      <div class="fc-topic">${esc(p.topik)}</div>
+      <div class="fc-body">${esc(p.isi)}</div>
+      ${rs.length?`<div class="fc-replies">${rs.map(r=>{var rc=avc(r.author_name);return`<div class="rep"><div class="rep-av" style="background:${rc}">${ini(r.author_name)}</div><div class="rep-bub"><div class="rep-author">${esc(r.author_name)}</div><div class="rep-text">${esc(r.isi)}</div></div></div>`;}).join('')}</div>`:''}
+      <div class="fc-footer">
+        <button class="fc-act" style="color:var(--c1)" onclick="openReplyModal('${p.id}')">↩️ Balas (${rs.length})</button>
+        ${canDel?`<button class="fc-act" style="color:var(--c2)" onclick="delForum('${p.id}')">🗑️ Hapus</button>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function openForumModal(){clr('f-topik','f-isi');document.getElementById('mo-forum').classList.add('on');}
+async function saveForum(){
+  await sb.from('forum_posts').insert([{topik:val('f-topik'),isi:val('f-isi'),author_id:CU.id,author_name:CP?.full_name}]);
+  closeModal('mo-forum');clr('f-topik','f-isi');loadForum();toast('✅ Diskusi diposting!');
+}
+function openReplyModal(id){sv('rep-pid',id);clr('r-isi');document.getElementById('mo-reply').classList.add('on');}
+async function saveReply(){
+  await sb.from('forum_replies').insert([{post_id:val('rep-pid'),isi:val('r-isi'),author_id:CU.id,author_name:CP?.full_name}]);
+  closeModal('mo-reply');clr('r-isi');loadForum();toast('✅ Balasan terkirim!');
+}
+async function delForum(id){
+  var ok=await confirm2('Hapus Diskusi','Semua balasan ikut terhapus.');
+  if(ok){await sb.from('forum_replies').delete().eq('post_id',id);await sb.from('forum_posts').delete().eq('id',id);loadForum();toast('🗑️ Diskusi dihapus');}
+}
+
+// AGENDA
+const agGrads=['linear-gradient(135deg,#6C63FF,#A855F7)','linear-gradient(135deg,#FF6584,#FF8E53)','linear-gradient(135deg,#10B981,#3B82F6)','linear-gradient(135deg,#F59E0B,#FCD34D)','linear-gradient(135deg,#0891B2,#3B82F6)'];
+var _agendaCache=[];
+async function loadAgenda(){
+  var el=document.getElementById('agenda-list');
+  if(!_agendaCache.length)el.innerHTML=loading();
+  var{data}=await sb.from('agenda').select('id,judul,tanggal,waktu,lokasi,keterangan').order('tanggal');
+  _agendaCache=data||[];
+  renderAgenda();
+}
+function renderAgenda(){
+  var el=document.getElementById('agenda-list');
+  var data=_agendaCache;
+  if(!data.length){el.innerHTML=empty('📅','Belum ada agenda');return;}
+  var isAdm=CP?.role==='admin';
+  el.innerHTML=data.map((a,i)=>{
+    var d=new Date(a.tanggal+'T00:00:00');
+    return`<div class="agc">
+      <div class="agc-date" style="background:${agGrads[i%agGrads.length]}">
+        <div class="agc-day">${d.getDate()}</div>
+        <div class="agc-month">${MN[d.getMonth()]}<br>${d.getFullYear()}</div>
+      </div>
+      <div class="agc-body">
+        <div class="agc-title">${esc(a.judul)}</div>
+        <div class="agc-info">
+          <span>⏰ ${a.waktu?a.waktu.substring(0,5):'TBA'}</span>
+          <span>📍 ${esc(a.lokasi||'-')}</span>
+          ${a.keterangan?`<span>📋 ${esc(a.keterangan)}</span>`:''}
+        </div>
+        ${isAdm?`<div class="agc-acts">
+          <button class="btn bo bsm" onclick="editAgendaById('${a.id}')">✏️ Edit</button>
+          <button class="btn br bsm" onclick="delAgenda('${a.id}')">🗑️ Hapus</button>
+        </div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+function editAgendaById(id){
+  var a=_agendaCache.find(x=>x.id===id);if(!a)return;
+  sv('ag-id',a.id);sv('ag-judul',a.judul);sv('ag-tgl',a.tanggal);
+  sv('ag-wkt',a.waktu||'');sv('ag-lok',a.lokasi||'');sv('ag-ket',a.keterangan||'');
+  document.getElementById('mo-agenda-title').textContent='✏️ Edit Agenda';
+  document.getElementById('mo-agenda').classList.add('on');
+}
+function openAgendaModal(){sv('ag-id','');clr('ag-judul','ag-tgl','ag-wkt','ag-lok','ag-ket');document.getElementById('mo-agenda-title').textContent='📅 Tambah Agenda';document.getElementById('mo-agenda').classList.add('on');}
+function editAgenda(d){sv('ag-id',d.id);sv('ag-judul',d.judul);sv('ag-tgl',d.tgl);sv('ag-wkt',d.wkt||'');sv('ag-lok',d.lok||'');sv('ag-ket',d.ket||'');document.getElementById('mo-agenda-title').textContent='✏️ Edit Agenda';document.getElementById('mo-agenda').classList.add('on');}
+async function saveAgenda(){
+  var id=val('ag-id');
+  var d={judul:val('ag-judul'),tanggal:val('ag-tgl'),waktu:val('ag-wkt'),lokasi:val('ag-lok'),keterangan:val('ag-ket')};
+  if(id)await sb.from('agenda').update(d).eq('id',id);else await sb.from('agenda').insert([d]);
+  closeModal('mo-agenda');loadAgenda();toast(id?'✅ Agenda diperbarui!':'✅ Agenda ditambahkan!');
+}
+async function delAgenda(id){var ok=await confirm2('Hapus Agenda','Yakin hapus agenda ini?');if(ok){await sb.from('agenda').delete().eq('id',id);loadAgenda();toast('🗑️ Agenda dihapus');}}
+
+// PENGUMUMAN
+async function loadPeng(){
+  var el=document.getElementById('peng-list');el.innerHTML=loading();
+  var{data}=await sb.from('pengumuman').select('*').order('created_at',{ascending:false});
+  var isAdm=CP?.role==='admin';
+  var html='';
+  if(!data?.length){el.innerHTML=(isAdm?`<div style="padding:0 16px 12px"><button class="btn bo bfull" onclick="openPengModal()">➕ Tambah Pengumuman</button></div>`:'')+empty('📭','Belum ada pengumuman');return;}
+  if(isAdm)html=`<div style="padding:0 16px 12px"><button class="btn bo bfull" onclick="openPengModal()">➕ Tambah Pengumuman</button></div>`;
+  html+=data.map(a=>`<div class="ann" style="margin:0 16px 10px;border-radius:14px">
+    <div class="ann-title">${esc(a.judul)}</div>
+    <div class="ann-body">${esc(a.isi)}</div>
+    <div class="ann-date">📅 ${fd(a.created_at)}</div>
+    ${isAdm?`<div class="ann-acts">
+      <button class="btn bo bsm" onclick='editPeng(${JSON.stringify({id:a.id,judul:a.judul,isi:a.isi})})'>✏️ Edit</button>
+      <button class="btn br bsm" onclick="delPeng('${a.id}')">🗑️ Hapus</button>
+    </div>`:''}
+  </div>`).join('');
+  el.innerHTML=html;
+}
+function openPengModal(){sv('peng-id','');clr('peng-judul','peng-isi');document.getElementById('mo-peng-title').textContent='📢 Tambah Pengumuman';document.getElementById('mo-peng').classList.add('on');}
+function editPeng(d){sv('peng-id',d.id);sv('peng-judul',d.judul);sv('peng-isi',d.isi);document.getElementById('mo-peng-title').textContent='✏️ Edit Pengumuman';document.getElementById('mo-peng').classList.add('on');}
+async function savePeng(){
+  var id=val('peng-id');
+  var d={judul:val('peng-judul'),isi:val('peng-isi'),author_id:CU.id};
+  if(id)await sb.from('pengumuman').update(d).eq('id',id);else await sb.from('pengumuman').insert([d]);
+  closeModal('mo-peng');loadPeng();toast(id?'✅ Pengumuman diperbarui!':'✅ Pengumuman ditambahkan!');
+}
+async function delPeng(id){var ok=await confirm2('Hapus Pengumuman','Pengumuman dihapus permanen.');if(ok){await sb.from('pengumuman').delete().eq('id',id);loadPeng();toast('🗑️ Pengumuman dihapus');}}
+
+// ARSIP
+async function loadArsip(){
+  var el=document.getElementById('arsip-list');el.innerHTML=loading();
+  var q=sb.from('arsip').select('*').order('created_at',{ascending:false});
+  if(aFil!=='all')q=q.eq('kategori',aFil);
+  var{data}=await q;
+  if(!data?.length){el.innerHTML=empty('📁','Belum ada arsip');return;}
+  var cfg={notulen:{e:'📝',bg:'#EEF0FF',bdg:'bdg-p'},absensi:{e:'✅',bg:'#D1FAE5',bdg:'bdg-g'},laporan:{e:'📊',bg:'#FEF3C7',bdg:'bdg-o'}};
+  el.innerHTML=data.map(a=>{
+    var c=cfg[a.kategori]||{e:'📄',bg:'#f0f0f0',bdg:'bdg-p'};
+    var canDel=CP?.role==='admin'||a.uploader_id===CU?.id;
+    return`<div class="dc">
+      <div class="dc-icon" style="background:${c.bg}">${c.e}</div>
+      <div class="dc-body">
+        <div class="dc-title">${esc(a.nama)}</div>
+        <div class="dc-meta"><span class="bdg ${c.bdg}">${a.kategori}</span>${a.tanggal?' · 📅 '+a.tanggal:''}</div>
+        ${a.keterangan?`<div class="dc-meta">${esc(a.keterangan)}</div>`:''}
+        <div class="dc-acts">
+          ${a.link?`<a href="${esc(a.link)}" target="_blank" class="btn bg bsm">🔗 Buka</a>`:''}
+          <button class="btn bo bsm" onclick='editArsip(${JSON.stringify({id:a.id,nama:a.nama,kat:a.kategori,tgl:a.tanggal,link:a.link,ket:a.keterangan})})'>✏️ Edit</button>
+          ${canDel?`<button class="btn br bsm" onclick="delArsip('${a.id}')">🗑️ Hapus</button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function swArsip(f,el){aFil=f;document.querySelectorAll('#page-arsip .tbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');loadArsip();}
+function openArsipModal(){sv('ar-id','');clr('ar-nama','ar-tgl','ar-link','ar-ket');sv('ar-kat','notulen');document.getElementById('mo-arsip-title').textContent='📁 Tambah Arsip';document.getElementById('mo-arsip').classList.add('on');}
+function editArsip(d){sv('ar-id',d.id);sv('ar-nama',d.nama);sv('ar-kat',d.kat);sv('ar-tgl',d.tgl||'');sv('ar-link',d.link||'');sv('ar-ket',d.ket||'');document.getElementById('mo-arsip-title').textContent='✏️ Edit Arsip';document.getElementById('mo-arsip').classList.add('on');}
+async function saveArsip(){
+  var id=val('ar-id');
+  var d={nama:val('ar-nama'),kategori:val('ar-kat'),tanggal:val('ar-tgl')||null,link:val('ar-link'),keterangan:val('ar-ket'),uploader_id:CU.id};
+  if(id)await sb.from('arsip').update(d).eq('id',id);else await sb.from('arsip').insert([d]);
+  closeModal('mo-arsip');loadArsip();toast(id?'✅ Arsip diperbarui!':'✅ Arsip ditambahkan!');
+}
+async function delArsip(id){var ok=await confirm2('Hapus Arsip','Arsip dihapus permanen.');if(ok){await sb.from('arsip').delete().eq('id',id);loadArsip();toast('🗑️ Arsip dihapus');}}
+
+// INTEGRASI
+async function loadInteg(){
+  var el=document.getElementById('ig-grid');el.innerHTML=loading();
+  var{data}=await sb.from('integrasi').select('*').order('nama');
+  var isAdm=CP?.role==='admin';
+  if(!data?.length){el.innerHTML='<div class="empt" style="grid-column:1/-1"><div class="empt-i">🔗</div><p>Belum ada link</p></div>';return;}
+  el.innerHTML=data.map(i=>{
+    var d=JSON.stringify({id:i.id,nama:i.nama,url:i.url,ikon:i.ikon||'',color:i.color||'#EEF0FF'});
+    return`<div class="ig-wrap">
+      <a href="${esc(i.url)}" target="_blank" class="ig-card">
+        <div class="ig-logo" style="background:${esc(i.color||'#EEF0FF')}">${esc(i.ikon||'🔗')}</div>
+        <div class="ig-name">${esc(i.nama)}</div>
+      </a>
+      ${isAdm?`<div class="ig-acts">
+        <button class="btn bo bsm" style="flex:1;font-size:11px" onclick='editInteg(${d.replace(/'/g,"&apos;")})'>✏️ Edit</button>
+        <button class="btn br bsm" onclick="delInteg('${i.id}')">🗑️</button>
+      </div>`:`<div style="height:4px"></div>`}
+    </div>`;
+  }).join('');
+}
+function openIntegModal(){sv('ai-id','');clr('ai-nama','ai-url','ai-ikon');sv('ai-color','#EEF0FF');document.getElementById('mo-integ-title').textContent='🔗 Tambah Link';document.getElementById('mo-integ').classList.add('on');}
+function editInteg(d){sv('ai-id',d.id);sv('ai-nama',d.nama);sv('ai-url',d.url);sv('ai-ikon',d.ikon||'');sv('ai-color',d.color||'#EEF0FF');document.getElementById('mo-integ-title').textContent='✏️ Edit Link';document.getElementById('mo-integ').classList.add('on');}
+async function saveInteg(){
+  var id=val('ai-id');
+  var d={nama:val('ai-nama'),url:val('ai-url'),ikon:val('ai-ikon'),color:val('ai-color')};
+  if(id)await sb.from('integrasi').update(d).eq('id',id);else await sb.from('integrasi').insert([d]);
+  closeModal('mo-integ');loadInteg();toast(id?'✅ Link diperbarui!':'✅ Link ditambahkan!');
+}
+async function delInteg(id){var ok=await confirm2('Hapus Link','Link integrasi dihapus.');if(ok){await sb.from('integrasi').delete().eq('id',id);loadInteg();toast('🗑️ Link dihapus');}}
+
+// PROFIL
+function loadProfil(){
+  var p=CP;if(!p)return;
+  var name=p.full_name||'-';var col=avc(name);
+  var phAv=document.getElementById('ph-av');
+  phAv.textContent=ini(name);phAv.style.background=`linear-gradient(135deg,${col},${col}88)`;
+  document.getElementById('ph-name').textContent=name;
+  document.getElementById('ph-role').textContent=p.role==='admin'?'👑 Pengurus / Admin':'🎓 Guru / Anggota';
+  sv('p-nama',p.full_name);sv('p-sekolah',p.school);sv('p-hp',p.phone);
+}
+async function saveProfile(){
+  var d={full_name:val('p-nama'),school:val('p-sekolah'),phone:val('p-hp')};
+  await sb.from('profiles').update(d).eq('id',CU.id);
+  Object.assign(CP,d);loadProfil();showApp();toast('✅ Profil disimpan!');
+}
+async function changePassword(){
+  var pw=val('pw-new'),cpw=val('pw-conf');var msg=document.getElementById('pw-msg');
+  if(pw.length<6){msg.textContent='❌ Min. 6 karakter';msg.style.color='var(--c2)';return;}
+  if(pw!==cpw){msg.textContent='❌ Password tidak cocok';msg.style.color='var(--c2)';return;}
+  var{error}=await sb.auth.updateUser({password:pw});
+  if(error){msg.textContent='❌ '+error.message;msg.style.color='var(--c2)';}
+  else{msg.textContent='✅ Password diubah!';msg.style.color='var(--c3)';clr('pw-new','pw-conf');}
+}
+
+// ADMIN - SET ROLE
+async function setAdm(id, v) {
+  var ok = await confirm2(
+    v ? 'Jadikan Admin?' : 'Cabut Admin?',
+    v ? 'User ini akan menjadi Admin.' : 'User ini akan kembali jadi Anggota.',
+    'Ya', '⚙️'
+  );
+  if (!ok) return;
+  await sb.from('profiles').update({role: v ? 'admin' : 'guru'}).eq('id', id);
+  loadGuru();
+  toast(v ? '👑 Dijadikan Admin!' : '↩️ Dicabut dari Admin!');
+}
+
+// ADMIN - RESET PASSWORD LANGSUNG
+function openResetPw(id, name) {
+  sv('rpw-uid', id);
+  sv('rpw-name', name);
+  sv('rpw-pw', '');
+  document.getElementById('rpw-msg').textContent = '';
+  document.getElementById('mo-resetpw').classList.add('on');
+}
+
+async function doResetPw() {
+  var uid = val('rpw-uid');
+  var pw = val('rpw-pw');
+  var msg = document.getElementById('rpw-msg');
+
+  if (pw.length < 6) {
+    msg.textContent = '❌ Password min. 6 karakter';
+    msg.style.color = 'var(--c2)';
+    return;
+  }
+
+  msg.textContent = '⏳ Memproses...';
+  msg.style.color = 'var(--muted)';
+
+  try {
+    var {data, error} = await sb.rpc('reset_user_password', {
+      target_user_id: uid,
+      new_password: pw
+    });
+
+    if (error) throw error;
+    if (data && !data.success) throw new Error(data.error);
+
+    msg.textContent = '✅ Password berhasil direset!';
+    msg.style.color = 'var(--c3)';
+    toast('✅ Password anggota berhasil direset!');
+    setTimeout(() => closeModal('mo-resetpw'), 1500);
+  } catch(e) {
+    msg.textContent = '❌ Gagal: ' + (e.message || 'Coba lagi');
+    msg.style.color = 'var(--c2)';
+  }
+}
+
+// Wire real functions to window so head stubs can call them
+window._doLogin=doLogin;window._doRegister=doRegister;window._doLogout=doLogout;
+window._navigate=navigate;window._fabAction=fabAction;
+window._filterGuru=filterGuru;window._swMateri=swMateri;window._swArsip=swArsip;
+window._saveMateri=saveMateri;window._editMateri=editMateri;window._delMateri=delMateri;
+window._saveForum=saveForum;window._openReplyModal=openReplyModal;
+window._saveReply=saveReply;window._delForum=delForum;
+window._openAgendaModal=openAgendaModal;window._editAgenda=editAgenda;
+window._saveAgenda=saveAgenda;window._delAgenda=delAgenda;
+window._openArsipModal=openArsipModal;window._editArsip=editArsip;
+window._saveArsip=saveArsip;window._delArsip=delArsip;
+window._openPengModal=openPengModal;window._editPeng=editPeng;
+window._savePeng=savePeng;window._delPeng=delPeng;
+window._openIntegModal=openIntegModal;window._editInteg=editInteg;
+window._saveInteg=saveInteg;window._delInteg=delInteg;
+window._saveProfile=saveProfile;window._changePassword=changePassword;
+window._setAdm=setAdm;window._openResetPw=openResetPw;window._doResetPw=doResetPw;
+window._confRes=confRes;
+window._editAgendaById=editAgendaById;
+
+init();
+</script>
+</body>
+</html>
