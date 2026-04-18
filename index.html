@@ -25,40 +25,40 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* AUTH */
 #auth-screen{
   position:fixed;inset:0;z-index:9999;overflow-y:auto;
-  background:linear-gradient(160deg,#0077B6,#00B4D8 50%,#06D6A0);
+  background:linear-gradient(160deg,#0F172A,#1E3A5F 50%,#1E4D8C);
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;
 }
 #auth-screen::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 15% 15%,rgba(0,212,255,.35),transparent 55%),
-             radial-gradient(ellipse at 85% 85%,rgba(6,214,160,.28),transparent 55%);}
+  background:radial-gradient(ellipse at 15% 15%,rgba(30,77,140,.45),transparent 55%),
+             radial-gradient(ellipse at 85% 85%,rgba(99,102,241,.25),transparent 55%);}
 .alogo{text-align:center;margin-bottom:28px;position:relative;z-index:1;}
-.alogo-icon{width:90px;height:90px;background:linear-gradient(135deg,#0077B6,#06D6A0);
+.alogo-icon{width:90px;height:90px;background:linear-gradient(135deg,#1E4D8C,#6366F1);
   border-radius:26px;display:flex;align-items:center;justify-content:center;
   margin:0 auto 14px;font-size:42px;
-  box-shadow:0 16px 48px rgba(0,180,216,.5),0 0 0 10px rgba(0,180,216,.12);}
+  box-shadow:0 16px 48px rgba(30,77,140,.6),0 0 0 10px rgba(99,102,241,.15);}
 .alogo h1{color:#fff;font-size:22px;font-weight:800;}
 .alogo p{color:rgba(255,255,255,.55);font-size:13px;margin-top:5px;}
-.acard{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);
-  border:1px solid rgba(255,255,255,.16);border-radius:24px;
+.acard{background:rgba(255,255,255,.07);backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.12);border-radius:24px;
   padding:22px 18px;width:100%;max-width:400px;position:relative;z-index:1;}
-.atabs{display:flex;background:rgba(0,0,0,.25);border-radius:12px;padding:4px;margin-bottom:18px;gap:4px;}
+.atabs{display:flex;background:rgba(0,0,0,.3);border-radius:12px;padding:4px;margin-bottom:18px;gap:4px;}
 .atab{flex:1;text-align:center;padding:9px;border-radius:9px;cursor:pointer;
-  color:rgba(255,255,255,.45);font-size:13px;font-weight:700;transition:all .25s;}
-.atab.on{background:linear-gradient(135deg,var(--c1),var(--c6));color:#fff;
-  box-shadow:0 4px 14px rgba(108,99,255,.45);}
+  color:rgba(255,255,255,.4);font-size:13px;font-weight:700;transition:all .25s;}
+.atab.on{background:linear-gradient(135deg,#1E4D8C,#6366F1);color:#fff;
+  box-shadow:0 4px 14px rgba(30,77,140,.5);}
 .af{display:none;}.af.on{display:block;}
 .fg{margin-bottom:13px;}
-.fg label{display:block;color:rgba(255,255,255,.6);font-size:11px;font-weight:700;
+.fg label{display:block;color:rgba(255,255,255,.55);font-size:11px;font-weight:700;
   margin-bottom:5px;text-transform:uppercase;letter-spacing:.6px;}
 .fg input{width:100%;padding:12px 14px;
-  background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.13);
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);
   border-radius:12px;color:#fff;font-size:14px;font-family:inherit;outline:none;transition:border .2s;}
-.fg input::placeholder{color:rgba(255,255,255,.3);}
-.fg input:focus{border-color:var(--c1);}
-.abtn{width:100%;padding:14px;background:linear-gradient(135deg,var(--c1),var(--c6));
+.fg input::placeholder{color:rgba(255,255,255,.28);}
+.fg input:focus{border-color:#6366F1;}
+.abtn{width:100%;padding:14px;background:linear-gradient(135deg,#1E4D8C,#6366F1);
   border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;
   cursor:pointer;font-family:inherit;margin-top:6px;letter-spacing:.2px;
-  box-shadow:0 6px 20px rgba(108,99,255,.4);transition:transform .15s;}
+  box-shadow:0 6px 20px rgba(30,77,140,.5);transition:transform .15s;}
 .abtn:active{transform:scale(.97);}
 .amsg{text-align:center;margin-top:10px;font-size:12px;color:rgba(255,255,255,.5);min-height:18px;}
 .amsg.err{color:#FCA5A5;}.amsg.ok{color:#6EE7B7;}
@@ -366,6 +366,20 @@ body.is-admin .bn.admin-only{display:flex;}
 }
 .notif-badge.show{display:flex;}
 
+/* FILE UPLOAD */
+.fupload{border:2px dashed var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:border .2s;position:relative;}
+.fupload:hover{border-color:var(--c1);}
+.fupload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.fupload-icon{font-size:28px;margin-bottom:6px;}
+.fupload-txt{font-size:13px;font-weight:700;color:var(--dark);}
+.fupload-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+.fupload-preview{display:flex;align-items:center;gap:10px;background:var(--c3l);border-radius:10px;padding:10px 12px;margin-top:8px;}
+.fupload-preview-icon{font-size:22px;}
+.fupload-preview-name{font-size:12px;font-weight:700;color:#065F46;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fupload-preview-clear{background:none;border:none;cursor:pointer;font-size:16px;color:var(--muted);flex-shrink:0;}
+.fupload-progress{height:6px;background:var(--border);border-radius:20px;margin-top:8px;overflow:hidden;display:none;}
+.fupload-progress-bar{height:100%;background:linear-gradient(90deg,var(--c3),var(--c1));border-radius:20px;width:0%;transition:width .3s;}
+
 /* HEADER ICON BUTTONS */
 .hdr-right{display:flex;align-items:center;gap:4px;flex-shrink:0;}
 .hic{
@@ -473,20 +487,20 @@ function fillAdmin(){
 <!-- AUTH -->
 <div id="auth-screen">
   <div class="alogo">
-    <div class="alogo-icon">🎓</div>
-    <h1>MGMP Bahasa Inggris</h1>
-    <p>Musyawarah Guru Mata Pelajaran</p>
+    <div class="alogo-icon" id="auth-logo-icon">🎓</div>
+    <h1 id="auth-title">MGMP Bahasa Inggris</h1>
+    <p id="auth-subtitle">Musyawarah Guru Mata Pelajaran</p>
   </div>
   <div class="acard">
     <div class="atabs">
-      <div class="atab on" onclick="switchAuthTab('login')">🔐 SignIn</div>
-      <div class="atab" onclick="switchAuthTab('register')">📝 Registration</div>
+      <div class="atab on" onclick="switchAuthTab('login')">🔐 Masuk</div>
+      <div class="atab" onclick="switchAuthTab('register')">📝 Daftar</div>
       <div class="atab" onclick="switchAuthTab('reset')">🔑 Reset</div>
     </div>
     <div id="form-login" class="af on">
       <div class="fg"><label>Email</label><input type="email" id="login-email" placeholder="email@example.com"></div>
       <div class="fg"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
-      <button class="abtn" onclick="doLogin()">🔐 SignIn</button>
+      <button class="abtn" onclick="doLogin()">🔐 Masuk Sekarang</button>
       <p class="amsg" id="login-msg"></p>
 
     </div>
@@ -635,6 +649,13 @@ function fillAdmin(){
           <p id="pw-msg" style="text-align:center;font-size:12px;margin-top:8px;min-height:18px"></p>
         </div>
         <button class="btn br bfull" onclick="doLogout()">🚪 Keluar</button>
+        <div class="admin-only" style="margin-top:12px">
+          <div class="card" style="margin:0 0 12px;border:2px solid var(--c1l)">
+            <div style="font-size:14px;font-weight:800;color:var(--dark);margin-bottom:4px">🎨 Pengaturan Tampilan</div>
+            <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Ubah logo, judul & subjudul halaman login</div>
+            <button class="btn bp bfull" onclick="openBrandingModal()">⚙️ Edit Branding Aplikasi</button>
+          </div>
+        </div>
       </div>
       <div class="wm">Developed & Supported by D.D Candra 2026</div>
     </div></div><!-- scroll -->
@@ -660,23 +681,50 @@ function fillAdmin(){
   <div class="md"><div class="mpill"></div>
     <div class="mhdr"><div class="mtitle" id="mo-materi-title">📚 Tambah Materi</div><button class="mclose" onclick="closeModal('mo-materi')">✕</button></div>
     <input type="hidden" id="m-id">
+    <input type="hidden" id="m-link">
     <div class="fr"><label>Judul</label><input type="text" id="m-judul" placeholder="Judul materi..."></div>
     <div class="fr"><label>Kategori</label><select id="m-kat"><option value="modul">📖 Modul Ajar</option><option value="rpp">📝 RPP / ATP</option><option value="soal">📋 Soal Ujian</option></select></div>
     <div class="fr"><label>Kelas</label><input type="text" id="m-kelas" placeholder="cth: Kelas 7, 8, 9"></div>
     <div class="fr"><label>Deskripsi</label><textarea id="m-desk" placeholder="Deskripsi singkat..."></textarea></div>
-    <div class="fr"><label>🔗 Link File</label><input type="text" id="m-link" placeholder="https://drive.google.com/..."></div>
-    <button class="btn bp bfull" onclick="saveMateri()">💾 Simpan</button>
+    <div class="fr"><label>📎 Upload File</label>
+      <div class="fupload" onclick="document.getElementById('m-file-input').click()">
+        <input type="file" id="m-file-input" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip" style="display:none" onchange="onFileSelected(this,'m')">
+        <div class="fupload-icon">📂</div>
+        <div class="fupload-txt">Klik untuk pilih file</div>
+        <div class="fupload-sub">PDF, Word, PowerPoint, Excel, ZIP (maks. 50MB)</div>
+      </div>
+      <div id="m-file-preview" style="display:none" class="fupload-preview">
+        <span class="fupload-preview-icon">📄</span>
+        <span class="fupload-preview-name" id="m-file-name"></span>
+        <button class="fupload-preview-clear" onclick="clearFile('m')">✕</button>
+      </div>
+      <div class="fupload-progress" id="m-progress"><div class="fupload-progress-bar" id="m-progress-bar"></div></div>
+    </div>
+    <button class="btn bp bfull" id="m-save-btn" onclick="saveMateri()">💾 Simpan</button>
   </div>
 </div>
 
 <div class="mo" id="mo-forum">
   <div class="md"><div class="mpill"></div>
     <div class="mhdr"><div class="mtitle">💬 Buat Diskusi</div><button class="mclose" onclick="closeModal('mo-forum')">✕</button></div>
+    <input type="hidden" id="f-link">
     <div class="fr"><label>Topik</label><input type="text" id="f-topik" placeholder="Judul diskusi..."></div>
     <div class="fr"><label>Isi Diskusi</label><textarea id="f-isi" placeholder="Tuliskan pertanyaan atau pendapat..."></textarea></div>
-    <div class="fr"><label>📎 Link File (opsional)</label><input type="text" id="f-link" placeholder="https://drive.google.com/..."></div>
-    <p style="font-size:11px;color:var(--muted);margin:-8px 0 12px">Upload file ke Google Drive/OneDrive, lalu paste link-nya di sini.</p>
-    <button class="btn bp bfull" onclick="saveForum()">💬 Posting</button>
+    <div class="fr"><label>📎 Upload File (opsional)</label>
+      <div class="fupload" onclick="document.getElementById('f-file-input').click()">
+        <input type="file" id="f-file-input" style="display:none" onchange="onFileSelected(this,'f')">
+        <div class="fupload-icon">📂</div>
+        <div class="fupload-txt">Klik untuk pilih file</div>
+        <div class="fupload-sub">Semua tipe file (maks. 50MB)</div>
+      </div>
+      <div id="f-file-preview" style="display:none" class="fupload-preview">
+        <span class="fupload-preview-icon">📄</span>
+        <span class="fupload-preview-name" id="f-file-name"></span>
+        <button class="fupload-preview-clear" onclick="clearFile('f')">✕</button>
+      </div>
+      <div class="fupload-progress" id="f-progress"><div class="fupload-progress-bar" id="f-progress-bar"></div></div>
+    </div>
+    <button class="btn bp bfull" id="f-save-btn" onclick="saveForum()">💬 Posting</button>
   </div>
 </div>
 
@@ -684,10 +732,23 @@ function fillAdmin(){
   <div class="md"><div class="mpill"></div>
     <div class="mhdr"><div class="mtitle">↩️ Balas Diskusi</div><button class="mclose" onclick="closeModal('mo-reply')">✕</button></div>
     <input type="hidden" id="rep-pid">
+    <input type="hidden" id="r-link">
     <div class="fr"><label>Balasan</label><textarea id="r-isi" placeholder="Tulis balasan..."></textarea></div>
-    <div class="fr"><label>📎 Link File (opsional)</label><input type="text" id="r-link" placeholder="https://drive.google.com/..."></div>
-    <p style="font-size:11px;color:var(--muted);margin:-8px 0 12px">Upload file ke Google Drive/OneDrive, lalu paste link-nya di sini.</p>
-    <button class="btn bp bfull" onclick="saveReply()">✈️ Kirim Balasan</button>
+    <div class="fr"><label>📎 Upload File (opsional)</label>
+      <div class="fupload" onclick="document.getElementById('r-file-input').click()">
+        <input type="file" id="r-file-input" style="display:none" onchange="onFileSelected(this,'r')">
+        <div class="fupload-icon">📂</div>
+        <div class="fupload-txt">Klik untuk pilih file</div>
+        <div class="fupload-sub">Semua tipe file (maks. 50MB)</div>
+      </div>
+      <div id="r-file-preview" style="display:none" class="fupload-preview">
+        <span class="fupload-preview-icon">📄</span>
+        <span class="fupload-preview-name" id="r-file-name"></span>
+        <button class="fupload-preview-clear" onclick="clearFile('r')">✕</button>
+      </div>
+      <div class="fupload-progress" id="r-progress"><div class="fupload-progress-bar" id="r-progress-bar"></div></div>
+    </div>
+    <button class="btn bp bfull" id="r-save-btn" onclick="saveReply()">✈️ Kirim Balasan</button>
   </div>
 </div>
 
@@ -708,12 +769,26 @@ function fillAdmin(){
   <div class="md"><div class="mpill"></div>
     <div class="mhdr"><div class="mtitle" id="mo-arsip-title">📁 Tambah Arsip</div><button class="mclose" onclick="closeModal('mo-arsip')">✕</button></div>
     <input type="hidden" id="ar-id">
+    <input type="hidden" id="ar-link">
     <div class="fr"><label>Nama Dokumen</label><input type="text" id="ar-nama" placeholder="Nama dokumen..."></div>
     <div class="fr"><label>Kategori</label><select id="ar-kat"><option value="notulen">📝 Notulen Rapat</option><option value="absensi">✅ Absensi</option><option value="laporan">📊 Laporan MGMP</option></select></div>
     <div class="fr"><label>Tanggal</label><input type="date" id="ar-tgl"></div>
-    <div class="fr"><label>🔗 Link File</label><input type="text" id="ar-link" placeholder="https://drive.google.com/..."></div>
+    <div class="fr"><label>📎 Upload File</label>
+      <div class="fupload" onclick="document.getElementById('ar-file-input').click()">
+        <input type="file" id="ar-file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip" style="display:none" onchange="onFileSelected(this,'ar')">
+        <div class="fupload-icon">📂</div>
+        <div class="fupload-txt">Klik untuk pilih file</div>
+        <div class="fupload-sub">PDF, Word, Excel, PowerPoint, ZIP (maks. 50MB)</div>
+      </div>
+      <div id="ar-file-preview" style="display:none" class="fupload-preview">
+        <span class="fupload-preview-icon">📄</span>
+        <span class="fupload-preview-name" id="ar-file-name"></span>
+        <button class="fupload-preview-clear" onclick="clearFile('ar')">✕</button>
+      </div>
+      <div class="fupload-progress" id="ar-progress"><div class="fupload-progress-bar" id="ar-progress-bar"></div></div>
+    </div>
     <div class="fr"><label>Keterangan</label><input type="text" id="ar-ket" placeholder="Keterangan singkat..."></div>
-    <button class="btn bp bfull" onclick="saveArsip()">💾 Simpan</button>
+    <button class="btn bp bfull" id="ar-save-btn" onclick="saveArsip()">💾 Simpan</button>
   </div>
 </div>
 
@@ -731,15 +806,83 @@ function fillAdmin(){
   <div class="md"><div class="mpill"></div>
     <div class="mhdr"><div class="mtitle" id="mo-integ-title">🔗 Tambah Link</div><button class="mclose" onclick="closeModal('mo-integ')">✕</button></div>
     <input type="hidden" id="ai-id">
-    <div class="fr"><label>Nama Layanan</label><input type="text" id="ai-nama" placeholder="cth: PMM, E-Kinerja"></div>
-    <div class="fr"><label>URL</label><input type="text" id="ai-url" placeholder="https://..."></div>
-    <div class="fr"><label>Emoji</label><input type="text" id="ai-ikon" placeholder="🎯" maxlength="5"></div>
-    <div class="fr"><label>Warna Background</label><input type="color" id="ai-color" value="#EEF0FF" style="height:44px;cursor:pointer;border-radius:10px;"></div>
+    <div class="fr"><label>Nama Layanan</label><input type="text" id="ai-nama" placeholder="cth: PMM, E-Kinerja, ARKAS"></div>
+    <div class="fr"><label>URL Tujuan</label><input type="url" id="ai-url" placeholder="https://..."></div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Tipe Logo</div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <button id="ai-type-emoji" class="btn bp bsm" style="flex:1" onclick="switchLogoType('emoji')">😀 Emoji</button>
+      <button id="ai-type-img" class="btn bline bsm" style="flex:1" onclick="switchLogoType('img')">🖼️ Gambar (URL)</button>
+    </div>
+
+    <div id="ai-section-emoji">
+      <div class="fr"><label>Emoji Icon</label><input type="text" id="ai-ikon-emoji" placeholder="🎯" maxlength="5" style="font-size:24px;text-align:center" oninput="updateIntegPreview()"></div>
+    </div>
+    <div id="ai-section-img" style="display:none">
+      <div class="fr"><label>Upload Gambar Logo</label>
+        <div class="fupload" onclick="document.getElementById('ai-file-input').click()">
+          <input type="file" id="ai-file-input" accept="image/*" style="display:none" onchange="onIntegImgSelected(this)">
+          <div class="fupload-icon">🖼️</div>
+          <div class="fupload-txt">Klik untuk pilih gambar</div>
+          <div class="fupload-sub">JPG, PNG, SVG, WebP (maks. 5MB)</div>
+        </div>
+        <div id="ai-file-preview" style="display:none" class="fupload-preview">
+          <span class="fupload-preview-icon">🖼️</span>
+          <span class="fupload-preview-name" id="ai-file-name"></span>
+          <button class="fupload-preview-clear" onclick="clearIntegImg()">✕</button>
+        </div>
+        <div class="fupload-progress" id="ai-progress"><div class="fupload-progress-bar" id="ai-progress-bar"></div></div>
+        <input type="hidden" id="ai-ikon-img">
+      </div>
+    </div>
+
+    <div class="fr"><label>Warna Background Logo</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="color" id="ai-color" value="#EEF0FF" style="height:44px;width:64px;cursor:pointer;border-radius:10px;border:1.5px solid var(--border);flex-shrink:0" oninput="updateIntegPreview()">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <div onclick="setIntegColor('#EEF0FF')" style="width:28px;height:28px;border-radius:8px;background:#EEF0FF;border:1.5px solid #ccc;cursor:pointer" title="Ungu Muda"></div>
+          <div onclick="setIntegColor('#D1FAE5')" style="width:28px;height:28px;border-radius:8px;background:#D1FAE5;border:1.5px solid #ccc;cursor:pointer" title="Hijau Muda"></div>
+          <div onclick="setIntegColor('#DBEAFE')" style="width:28px;height:28px;border-radius:8px;background:#DBEAFE;border:1.5px solid #ccc;cursor:pointer" title="Biru Muda"></div>
+          <div onclick="setIntegColor('#FEF3C7')" style="width:28px;height:28px;border-radius:8px;background:#FEF3C7;border:1.5px solid #ccc;cursor:pointer" title="Kuning Muda"></div>
+          <div onclick="setIntegColor('#FFE4E6')" style="width:28px;height:28px;border-radius:8px;background:#FFE4E6;border:1.5px solid #ccc;cursor:pointer" title="Merah Muda"></div>
+          <div onclick="setIntegColor('#F3E8FF')" style="width:28px;height:28px;border-radius:8px;background:#F3E8FF;border:1.5px solid #ccc;cursor:pointer" title="Lavender"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Preview</div>
+      <div style="display:inline-flex;flex-direction:column;align-items:center;gap:8px">
+        <div id="ai-preview-logo" style="width:52px;height:52px;border-radius:14px;background:#EEF0FF;display:flex;align-items:center;justify-content:center;font-size:26px;overflow:hidden">🔗</div>
+        <div id="ai-preview-name" style="font-size:12px;font-weight:700;color:var(--dark)">Nama Layanan</div>
+      </div>
+    </div>
+
     <button class="btn bv bfull" onclick="saveInteg()">💾 Simpan</button>
   </div>
 </div>
 
-<div class="mo" id="mo-resetpw">
+<div class="mo" id="mo-branding">
+  <div class="md"><div class="mpill"></div>
+    <div class="mhdr"><div class="mtitle">🎨 Edit Branding Aplikasi</div><button class="mclose" onclick="closeModal('mo-branding')">✕</button></div>
+    <div class="fr">
+      <label>Emoji / Logo (1 karakter emoji)</label>
+      <input type="text" id="br-logo" placeholder="🎓" maxlength="4" style="font-size:28px;text-align:center;padding:10px;">
+    </div>
+    <div style="font-size:11px;color:var(--muted);margin:-8px 0 12px">Ketik emoji apapun, contoh: 📚 🏫 🌟 ✨ 🎯</div>
+    <div class="fr"><label>Judul Aplikasi</label><input type="text" id="br-title" placeholder="MGMP Bahasa Inggris"></div>
+    <div class="fr"><label>Sub Judul</label><input type="text" id="br-subtitle" placeholder="Musyawarah Guru Mata Pelajaran"></div>
+    <div style="background:var(--bg);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px">Preview</div>
+      <div id="br-preview-icon" style="font-size:36px;margin-bottom:6px">🎓</div>
+      <div id="br-preview-title" style="font-size:16px;font-weight:800;color:var(--dark)">MGMP Bahasa Inggris</div>
+      <div id="br-preview-subtitle" style="font-size:12px;color:var(--muted);margin-top:3px">Musyawarah Guru Mata Pelajaran</div>
+    </div>
+    <button class="btn bp bfull" onclick="saveBranding()">💾 Simpan Perubahan</button>
+    <p id="br-msg" style="text-align:center;font-size:12px;margin-top:8px;min-height:18px"></p>
+  </div>
+</div>
   <div class="md"><div class="mpill"></div>
     <div class="mhdr"><div class="mtitle">🔑 Reset Password Anggota</div><button class="mclose" onclick="closeModal('mo-resetpw')">✕</button></div>
     <input type="hidden" id="rpw-uid">
@@ -787,6 +930,7 @@ function empty(icon,msg){return`<div class="empt"><div class="empt-i">${icon}</d
 
 // INIT
 async function init(){
+  loadBranding();
   const{data:{session}}=await sb.auth.getSession();
   if(session){await loadCP(session.user);showApp();}else{
     showAuth();
@@ -1012,13 +1156,19 @@ async function loadMateri(){
   }).join('');
 }
 function swMateri(f,el){mFil=f;document.querySelectorAll('#page-materi .tbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');loadMateri();}
-function openMateriModal(){sv('m-id','');clr('m-judul','m-kelas','m-desk','m-link');sv('m-kat','modul');document.getElementById('mo-materi-title').textContent='📚 Tambah Materi';document.getElementById('mo-materi').classList.add('on');}
+function openMateriModal(){sv('m-id','');clr('m-judul','m-kelas','m-desk');sv('m-kat','modul');clearFile('m');document.getElementById('mo-materi-title').textContent='📚 Tambah Materi';document.getElementById('mo-materi').classList.add('on');}
 function editMateri(d){sv('m-id',d.id);sv('m-judul',d.judul||'');sv('m-kat',d.kat||'modul');sv('m-kelas',d.kelas||'');sv('m-desk',d.desk||'');sv('m-link',d.link||'');document.getElementById('mo-materi-title').textContent='✏️ Edit Materi';document.getElementById('mo-materi').classList.add('on');}
 async function saveMateri(){
   var id=val('m-id');
-  var d={judul:val('m-judul'),kategori:val('m-kat'),kelas:val('m-kelas'),deskripsi:val('m-desk'),link:val('m-link'),uploader_id:CU.id,uploader_name:CP?.full_name};
-  if(id)await sb.from('materi').update(d).eq('id',id);else await sb.from('materi').insert([d]);
-  closeModal('mo-materi');loadMateri();toast(id?'✅ Materi diperbarui!':'✅ Materi ditambahkan!');
+  setBtnLoading('m-save-btn',true);
+  try{
+    var link=val('m-link');
+    if(_uploadFiles['m']){link=await uploadFile('m','materi-files','uploads');}
+    var d={judul:val('m-judul'),kategori:val('m-kat'),kelas:val('m-kelas'),deskripsi:val('m-desk'),link:link||null,uploader_id:CU.id,uploader_name:CP?.full_name};
+    if(id)await sb.from('materi').update(d).eq('id',id);else await sb.from('materi').insert([d]);
+    clearFile('m');closeModal('mo-materi');loadMateri();toast(id?'✅ Materi diperbarui!':'✅ Materi ditambahkan!');
+  }catch(e){toast('❌ '+e.message);}
+  setBtnLoading('m-save-btn',false,'💾 Simpan');
 }
 async function delMateri(id){var ok=await confirm2('Hapus Materi','Yakin hapus materi ini?');if(ok){await sb.from('materi').delete().eq('id',id);loadMateri();toast('🗑️ Materi dihapus');}}
 
@@ -1046,17 +1196,27 @@ async function loadForum(){
     </div>`;
   }).join('');
 }
-function openForumModal(){clr('f-topik','f-isi','f-link');document.getElementById('mo-forum').classList.add('on');}
+function openForumModal(){clr('f-topik','f-isi');clearFile('f');document.getElementById('mo-forum').classList.add('on');}
 async function saveForum(){
-  var link=val('f-link');
-  await sb.from('forum_posts').insert([{topik:val('f-topik'),isi:val('f-isi'),author_id:CU.id,author_name:CP?.full_name,link_file:link||null}]);
-  closeModal('mo-forum');clr('f-topik','f-isi','f-link');loadForum();toast('✅ Diskusi diposting!');
+  setBtnLoading('f-save-btn',true);
+  try{
+    var link=val('f-link');
+    if(_uploadFiles['f']){link=await uploadFile('f','forum-files','diskusi');}
+    await sb.from('forum_posts').insert([{topik:val('f-topik'),isi:val('f-isi'),author_id:CU.id,author_name:CP?.full_name,link_file:link||null}]);
+    clearFile('f');closeModal('mo-forum');clr('f-topik','f-isi');loadForum();toast('✅ Diskusi diposting!');
+  }catch(e){toast('❌ '+e.message);}
+  setBtnLoading('f-save-btn',false,'💬 Posting');
 }
-function openReplyModal(id){sv('rep-pid',id);clr('r-isi','r-link');document.getElementById('mo-reply').classList.add('on');}
+function openReplyModal(id){sv('rep-pid',id);clr('r-isi');clearFile('r');document.getElementById('mo-reply').classList.add('on');}
 async function saveReply(){
-  var link=val('r-link');
-  await sb.from('forum_replies').insert([{post_id:val('rep-pid'),isi:val('r-isi'),author_id:CU.id,author_name:CP?.full_name,link_file:link||null}]);
-  closeModal('mo-reply');clr('r-isi','r-link');loadForum();toast('✅ Balasan terkirim!');
+  setBtnLoading('r-save-btn',true);
+  try{
+    var link=val('r-link');
+    if(_uploadFiles['r']){link=await uploadFile('r','forum-files','balasan');}
+    await sb.from('forum_replies').insert([{post_id:val('rep-pid'),isi:val('r-isi'),author_id:CU.id,author_name:CP?.full_name,link_file:link||null}]);
+    clearFile('r');closeModal('mo-reply');clr('r-isi');loadForum();toast('✅ Balasan terkirim!');
+  }catch(e){toast('❌ '+e.message);}
+  setBtnLoading('r-save-btn',false,'✈️ Kirim Balasan');
 }
 async function delForum(id){
   var ok=await confirm2('Hapus Diskusi','Semua balasan ikut terhapus.');
@@ -1173,13 +1333,19 @@ async function loadArsip(){
   }).join('');
 }
 function swArsip(f,el){aFil=f;document.querySelectorAll('#page-arsip .tbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');loadArsip();}
-function openArsipModal(){sv('ar-id','');clr('ar-nama','ar-tgl','ar-link','ar-ket');sv('ar-kat','notulen');document.getElementById('mo-arsip-title').textContent='📁 Tambah Arsip';document.getElementById('mo-arsip').classList.add('on');}
+function openArsipModal(){sv('ar-id','');clr('ar-nama','ar-tgl','ar-ket');sv('ar-kat','notulen');clearFile('ar');document.getElementById('mo-arsip-title').textContent='📁 Tambah Arsip';document.getElementById('mo-arsip').classList.add('on');}
 function editArsip(d){sv('ar-id',d.id);sv('ar-nama',d.nama);sv('ar-kat',d.kat);sv('ar-tgl',d.tgl||'');sv('ar-link',d.link||'');sv('ar-ket',d.ket||'');document.getElementById('mo-arsip-title').textContent='✏️ Edit Arsip';document.getElementById('mo-arsip').classList.add('on');}
 async function saveArsip(){
   var id=val('ar-id');
-  var d={nama:val('ar-nama'),kategori:val('ar-kat'),tanggal:val('ar-tgl')||null,link:val('ar-link'),keterangan:val('ar-ket'),uploader_id:CU.id};
-  if(id)await sb.from('arsip').update(d).eq('id',id);else await sb.from('arsip').insert([d]);
-  closeModal('mo-arsip');loadArsip();toast(id?'✅ Arsip diperbarui!':'✅ Arsip ditambahkan!');
+  setBtnLoading('ar-save-btn',true);
+  try{
+    var link=val('ar-link');
+    if(_uploadFiles['ar']){link=await uploadFile('ar','arsip-files','uploads');}
+    var d={nama:val('ar-nama'),kategori:val('ar-kat'),tanggal:val('ar-tgl')||null,link:link||null,keterangan:val('ar-ket'),uploader_id:CU.id};
+    if(id)await sb.from('arsip').update(d).eq('id',id);else await sb.from('arsip').insert([d]);
+    clearFile('ar');closeModal('mo-arsip');loadArsip();toast(id?'✅ Arsip diperbarui!':'✅ Arsip ditambahkan!');
+  }catch(e){toast('❌ '+e.message);}
+  setBtnLoading('ar-save-btn',false,'💾 Simpan');
 }
 async function delArsip(id){var ok=await confirm2('Hapus Arsip','Arsip dihapus permanen.');if(ok){await sb.from('arsip').delete().eq('id',id);loadArsip();toast('🗑️ Arsip dihapus');}}
 
@@ -1190,10 +1356,13 @@ async function loadInteg(){
   var isAdm=CP?.role==='admin';
   if(!data?.length){el.innerHTML='<div class="empt" style="grid-column:1/-1"><div class="empt-i">🔗</div><p>Belum ada link</p></div>';return;}
   el.innerHTML=data.map(i=>{
-    var d=JSON.stringify({id:i.id,nama:i.nama,url:i.url,ikon:i.ikon||'',color:i.color||'#EEF0FF'});
+    var logoHtml=i.ikon_url
+      ?`<img src="${esc(i.ikon_url)}" style="width:36px;height:36px;object-fit:contain;border-radius:6px" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`+`<span style="display:none;font-size:24px">${esc(i.ikon||'🔗')}</span>`
+      :`<span style="font-size:24px">${esc(i.ikon||'🔗')}</span>`;
+    var d=JSON.stringify({id:i.id,nama:i.nama,url:i.url,ikon:i.ikon||'',ikon_url:i.ikon_url||'',color:i.color||'#EEF0FF'});
     return`<div class="ig-wrap">
       <a href="${esc(i.url)}" target="_blank" class="ig-card">
-        <div class="ig-logo" style="background:${esc(i.color||'#EEF0FF')}">${esc(i.ikon||'🔗')}</div>
+        <div class="ig-logo" style="background:${esc(i.color||'#EEF0FF')};overflow:hidden">${logoHtml}</div>
         <div class="ig-name">${esc(i.nama)}</div>
       </a>
       ${isAdm?`<div class="ig-acts">
@@ -1203,13 +1372,86 @@ async function loadInteg(){
     </div>`;
   }).join('');
 }
-function openIntegModal(){sv('ai-id','');clr('ai-nama','ai-url','ai-ikon');sv('ai-color','#EEF0FF');document.getElementById('mo-integ-title').textContent='🔗 Tambah Link';document.getElementById('mo-integ').classList.add('on');}
-function editInteg(d){sv('ai-id',d.id);sv('ai-nama',d.nama);sv('ai-url',d.url);sv('ai-ikon',d.ikon||'');sv('ai-color',d.color||'#EEF0FF');document.getElementById('mo-integ-title').textContent='✏️ Edit Link';document.getElementById('mo-integ').classList.add('on');}
+
+var _integLogoType='emoji';
+function switchLogoType(t){
+  _integLogoType=t;
+  document.getElementById('ai-section-emoji').style.display=t==='emoji'?'block':'none';
+  document.getElementById('ai-section-img').style.display=t==='img'?'block':'none';
+  document.getElementById('ai-type-emoji').className='btn bsm '+(t==='emoji'?'bp':'bline');
+  document.getElementById('ai-type-img').className='btn bsm '+(t==='img'?'bp':'bline');
+  updateIntegPreview();
+}
+function setIntegColor(c){
+  document.getElementById('ai-color').value=c;
+  updateIntegPreview();
+}
+function updateIntegPreview(){
+  var color=document.getElementById('ai-color').value||'#EEF0FF';
+  var nama=val('ai-nama')||'Nama Layanan';
+  var logo=document.getElementById('ai-preview-logo');
+  logo.style.background=color;
+  document.getElementById('ai-preview-name').textContent=nama;
+  if(_integLogoType==='img'){
+    var imgUrl=val('ai-ikon-img');
+    if(imgUrl){logo.innerHTML=`<img src="${imgUrl}" style="width:36px;height:36px;object-fit:contain;border-radius:6px">`;}
+    else{logo.innerHTML='🖼️';}
+  }else{
+    var emoji=val('ai-ikon-emoji')||'🔗';
+    logo.innerHTML=`<span style="font-size:26px">${emoji}</span>`;
+  }
+}
+function openIntegModal(){
+  sv('ai-id','');clr('ai-nama','ai-url','ai-ikon-emoji','ai-ikon-img');
+  sv('ai-color','#EEF0FF');
+  switchLogoType('emoji');
+  document.getElementById('ai-preview-logo').innerHTML='<span style="font-size:26px">🔗</span>';
+  document.getElementById('ai-preview-logo').style.background='#EEF0FF';
+  document.getElementById('ai-preview-name').textContent='Nama Layanan';
+  document.getElementById('mo-integ-title').textContent='🔗 Tambah Link';
+  document.getElementById('mo-integ').classList.add('on');
+  document.getElementById('ai-nama').oninput=updateIntegPreview;
+}
+function editInteg(d){
+  sv('ai-id',d.id);sv('ai-nama',d.nama);sv('ai-url',d.url);sv('ai-color',d.color||'#EEF0FF');
+  _uploadFiles['ai']=null;
+  document.getElementById('ai-file-preview').style.display='none';
+  document.getElementById('ai-file-input').value='';
+  if(d.ikon_url){
+    switchLogoType('img');
+    sv('ai-ikon-img',d.ikon_url);
+    document.getElementById('ai-preview-logo').innerHTML=`<img src="${d.ikon_url}" style="width:36px;height:36px;object-fit:contain;border-radius:6px">`;
+  }else{
+    switchLogoType('emoji');sv('ai-ikon-emoji',d.ikon||'');
+  }
+  document.getElementById('mo-integ-title').textContent='✏️ Edit Link';
+  document.getElementById('mo-integ').classList.add('on');
+  document.getElementById('ai-nama').oninput=updateIntegPreview;
+  updateIntegPreview();
+}
 async function saveInteg(){
   var id=val('ai-id');
-  var d={nama:val('ai-nama'),url:val('ai-url'),ikon:val('ai-ikon'),color:val('ai-color')};
-  if(id)await sb.from('integrasi').update(d).eq('id',id);else await sb.from('integrasi').insert([d]);
-  closeModal('mo-integ');loadInteg();toast(id?'✅ Link diperbarui!':'✅ Link ditambahkan!');
+  if(!val('ai-nama')||!val('ai-url')){toast('❌ Nama dan URL wajib diisi!');return;}
+  var btn=document.querySelector('#mo-integ .btn.bv.bfull');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Menyimpan...';}
+  try{
+    var ikon='',ikon_url='';
+    if(_integLogoType==='img'){
+      if(_uploadFiles['ai']){
+        ikon_url=await uploadFile('ai','integrasi-logos','logos');
+      }else{
+        ikon_url=val('ai-ikon-img');
+      }
+    }else{
+      ikon=val('ai-ikon-emoji');
+    }
+    var d={nama:val('ai-nama'),url:val('ai-url'),ikon,ikon_url,color:val('ai-color')};
+    if(id)await sb.from('integrasi').update(d).eq('id',id);
+    else await sb.from('integrasi').insert([d]);
+    clearIntegImg();
+    closeModal('mo-integ');loadInteg();toast(id?'✅ Link diperbarui!':'✅ Link ditambahkan!');
+  }catch(e){toast('❌ '+e.message);}
+  if(btn){btn.disabled=false;btn.textContent='💾 Simpan';}
 }
 async function delInteg(id){var ok=await confirm2('Hapus Link','Link integrasi dihapus.');if(ok){await sb.from('integrasi').delete().eq('id',id);loadInteg();toast('🗑️ Link dihapus');}}
 
@@ -1350,6 +1592,134 @@ function markAllSeen() {
   var badge = document.getElementById('notif-badge');
   if (badge) badge.classList.remove('show');
 }
+
+// ============================================================
+// FILE UPLOAD UTILITIES
+// ============================================================
+var _uploadFiles = {}; // prefix -> File object
+
+function onFileSelected(input, prefix) {
+  var file = input.files[0];
+  if (!file) return;
+  _uploadFiles[prefix] = file;
+  var ext = file.name.split('.').pop().toUpperCase();
+  var icons = {PDF:'📕',DOC:'📘',DOCX:'📘',XLS:'📗',XLSX:'📗',PPT:'📙',PPTX:'📙',ZIP:'🗜️',RAR:'🗜️',PNG:'🖼️',JPG:'🖼️',JPEG:'🖼️',MP4:'🎬',MP3:'🎵'};
+  document.getElementById(prefix+'-file-preview').style.display='flex';
+  document.getElementById(prefix+'-file-name').textContent=file.name;
+  document.querySelector('#'+prefix+'-file-preview .fupload-preview-icon').textContent=icons[ext]||'📄';
+}
+
+function clearFile(prefix) {
+  _uploadFiles[prefix] = null;
+  document.getElementById(prefix+'-file-preview').style.display='none';
+  var input=document.getElementById(prefix+'-file-input');
+  if(input)input.value='';
+}
+
+function onIntegImgSelected(input) {
+  var file = input.files[0];
+  if (!file) return;
+  _uploadFiles['ai'] = file;
+  document.getElementById('ai-file-preview').style.display='flex';
+  document.getElementById('ai-file-name').textContent=file.name;
+  // Preview langsung di kotak preview integrasi
+  var reader=new FileReader();
+  reader.onload=function(e){
+    document.getElementById('ai-preview-logo').innerHTML=`<img src="${e.target.result}" style="width:36px;height:36px;object-fit:contain;border-radius:6px">`;
+    document.getElementById('ai-ikon-img').value=e.target.result; // temp base64 for preview
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearIntegImg() {
+  _uploadFiles['ai'] = null;
+  document.getElementById('ai-file-preview').style.display='none';
+  document.getElementById('ai-file-input').value='';
+  document.getElementById('ai-ikon-img').value='';
+  document.getElementById('ai-preview-logo').innerHTML='<span style="font-size:26px">🔗</span>';
+}
+
+function setProgress(prefix, pct) {
+  var bar=document.getElementById(prefix+'-progress');
+  var fill=document.getElementById(prefix+'-progress-bar');
+  if(!bar)return;
+  if(pct===null){bar.style.display='none';fill.style.width='0%';return;}
+  bar.style.display='block';fill.style.width=pct+'%';
+}
+
+function setBtnLoading(id, loading, label) {
+  var btn=document.getElementById(id);
+  if(!btn)return;
+  btn.disabled=loading;
+  btn.textContent=loading?'⏳ Mengupload...':label;
+}
+
+async function uploadFile(prefix, bucket, folder) {
+  var file=_uploadFiles[prefix];
+  if(!file)return null;
+  var ext=file.name.split('.').pop();
+  var fname=folder+'/'+(Date.now())+'_'+Math.random().toString(36).substr(2,6)+'.'+ext;
+  setProgress(prefix,10);
+  var{data,error}=await sb.storage.from(bucket).upload(fname,file,{cacheControl:'3600',upsert:false});
+  if(error){setProgress(prefix,null);throw new Error('Upload gagal: '+error.message);}
+  setProgress(prefix,100);
+  setTimeout(()=>setProgress(prefix,null),800);
+  var{data:urlData}=sb.storage.from(bucket).getPublicUrl(fname);
+  return urlData.publicUrl;
+}
+
+// ============================================================
+// BRANDING
+async function loadBranding(){
+  try{
+    var{data}=await sb.from('app_settings').select('value').eq('key','branding').single();
+    if(data?.value){
+      var b=data.value;
+      if(b.logo)document.getElementById('auth-logo-icon').textContent=b.logo;
+      if(b.title){
+        document.getElementById('auth-title').textContent=b.title;
+        document.title=b.title;
+      }
+      if(b.subtitle)document.getElementById('auth-subtitle').textContent=b.subtitle;
+    }
+  }catch(e){}
+}
+function openBrandingModal(){
+  var logo=document.getElementById('auth-logo-icon').textContent;
+  var title=document.getElementById('auth-title').textContent;
+  var sub=document.getElementById('auth-subtitle').textContent;
+  document.getElementById('br-logo').value=logo;
+  document.getElementById('br-title').value=title;
+  document.getElementById('br-subtitle').value=sub;
+  document.getElementById('br-preview-icon').textContent=logo;
+  document.getElementById('br-preview-title').textContent=title;
+  document.getElementById('br-preview-subtitle').textContent=sub;
+  document.getElementById('br-msg').textContent='';
+  document.getElementById('mo-branding').classList.add('on');
+  // Live preview
+  document.getElementById('br-logo').oninput=function(){document.getElementById('br-preview-icon').textContent=this.value||'🎓';};
+  document.getElementById('br-title').oninput=function(){document.getElementById('br-preview-title').textContent=this.value||'Judul Aplikasi';};
+  document.getElementById('br-subtitle').oninput=function(){document.getElementById('br-preview-subtitle').textContent=this.value||'Sub judul';};
+}
+async function saveBranding(){
+  var logo=document.getElementById('br-logo').value.trim()||'🎓';
+  var title=document.getElementById('br-title').value.trim();
+  var subtitle=document.getElementById('br-subtitle').value.trim();
+  var msg=document.getElementById('br-msg');
+  if(!title){msg.textContent='❌ Judul tidak boleh kosong';msg.style.color='var(--c2)';return;}
+  msg.textContent='⏳ Menyimpan...';msg.style.color='var(--muted)';
+  var{error}=await sb.from('app_settings').upsert({key:'branding',value:{logo,title,subtitle}});
+  if(error){msg.textContent='❌ Gagal: '+error.message;msg.style.color='var(--c2)';return;}
+  // Terapkan langsung
+  document.getElementById('auth-logo-icon').textContent=logo;
+  document.getElementById('auth-title').textContent=title;
+  document.getElementById('auth-subtitle').textContent=subtitle;
+  document.title=title;
+  msg.textContent='✅ Branding berhasil disimpan!';msg.style.color='var(--c3)';
+  toast('✅ Tampilan aplikasi diperbarui!');
+  setTimeout(()=>closeModal('mo-branding'),1500);
+}
+window._openBrandingModal=openBrandingModal;
 
 // Override navigate to mark seen when opening relevant pages
 var _origNavigate = null;
