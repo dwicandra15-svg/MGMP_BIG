@@ -25,17 +25,17 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* AUTH */
 #auth-screen{
   position:fixed;inset:0;z-index:9999;overflow-y:auto;
-  background:linear-gradient(160deg,#1E1B4B,#312E81 50%,#4C1D95);
+  background:linear-gradient(160deg,#0077B6,#00B4D8 50%,#06D6A0);
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;
 }
 #auth-screen::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 15% 15%,rgba(108,99,255,.35),transparent 55%),
-             radial-gradient(ellipse at 85% 85%,rgba(168,85,247,.28),transparent 55%);}
+  background:radial-gradient(ellipse at 15% 15%,rgba(0,212,255,.35),transparent 55%),
+             radial-gradient(ellipse at 85% 85%,rgba(6,214,160,.28),transparent 55%);}
 .alogo{text-align:center;margin-bottom:28px;position:relative;z-index:1;}
-.alogo-icon{width:90px;height:90px;background:linear-gradient(135deg,var(--c1),var(--c6));
+.alogo-icon{width:90px;height:90px;background:linear-gradient(135deg,#0077B6,#06D6A0);
   border-radius:26px;display:flex;align-items:center;justify-content:center;
   margin:0 auto 14px;font-size:42px;
-  box-shadow:0 16px 48px rgba(108,99,255,.5),0 0 0 10px rgba(108,99,255,.12);}
+  box-shadow:0 16px 48px rgba(0,180,216,.5),0 0 0 10px rgba(0,180,216,.12);}
 .alogo h1{color:#fff;font-size:22px;font-weight:800;}
 .alogo p{color:rgba(255,255,255,.55);font-size:13px;margin-top:5px;}
 .acard{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);
@@ -62,7 +62,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .abtn:active{transform:scale(.97);}
 .amsg{text-align:center;margin-top:10px;font-size:12px;color:rgba(255,255,255,.5);min-height:18px;}
 .amsg.err{color:#FCA5A5;}.amsg.ok{color:#6EE7B7;}
-.awm{color:rgba(255,255,255,.2);font-size:10px;text-align:center;margin-top:18px;position:relative;z-index:1;}
+.awm{color:rgba(255,255,255,.6);font-size:11px;font-weight:800;text-align:center;margin-top:18px;position:relative;z-index:1;letter-spacing:.3px;}
 
 /* APP SHELL */
 #app{position:fixed;inset:0;display:none;flex-direction:column;}
@@ -352,6 +352,20 @@ body.is-admin .bn.admin-only{display:flex;}
 
 
 
+/* NOTIFICATION BADGE */
+.notif-wrap{position:relative;display:inline-flex;}
+.notif-badge{
+  position:absolute;top:-5px;right:-5px;
+  background:#EF4444;color:#fff;
+  font-size:9px;font-weight:800;
+  min-width:16px;height:16px;
+  border-radius:20px;padding:0 4px;
+  display:none;align-items:center;justify-content:center;
+  border:2px solid var(--card);
+  line-height:1;z-index:10;
+}
+.notif-badge.show{display:flex;}
+
 /* HEADER ICON BUTTONS */
 .hdr-right{display:flex;align-items:center;gap:4px;flex-shrink:0;}
 .hic{
@@ -465,14 +479,14 @@ function fillAdmin(){
   </div>
   <div class="acard">
     <div class="atabs">
-      <div class="atab on" onclick="switchAuthTab('login')">🔐 Masuk</div>
-      <div class="atab" onclick="switchAuthTab('register')">📝 Daftar</div>
+      <div class="atab on" onclick="switchAuthTab('login')">🔐 SignIn</div>
+      <div class="atab" onclick="switchAuthTab('register')">📝 Registration</div>
       <div class="atab" onclick="switchAuthTab('reset')">🔑 Reset</div>
     </div>
     <div id="form-login" class="af on">
       <div class="fg"><label>Email</label><input type="email" id="login-email" placeholder="email@example.com"></div>
       <div class="fg"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
-      <button class="abtn" onclick="doLogin()">🔐 Masuk Sekarang</button>
+      <button class="abtn" onclick="doLogin()">🔐 SignIn</button>
       <p class="amsg" id="login-msg"></p>
 
     </div>
@@ -505,7 +519,10 @@ function fillAdmin(){
       <div class="hdr-title" id="hdr-title">Dashboard</div>
     </div>
     <div class="hdr-right">
-      <button class="hic" onclick="navigate('pengumuman')" title="Pengumuman">📢</button>
+      <div class="notif-wrap">
+        <button class="hic" id="btn-notif" onclick="navigate('pengumuman')" title="Notifikasi">🔔</button>
+        <span class="notif-badge" id="notif-badge">0</span>
+      </div>
       <button class="hic" onclick="navigate('arsip')" title="Arsip Dokumen">📁</button>
       <button class="hic" onclick="navigate('integrasi')" title="Integrasi Kinerja">🔗</button>
       <button class="hic" onclick="navigate('profil')" id="hdr-prof-btn" title="Profil Saya">
@@ -657,6 +674,8 @@ function fillAdmin(){
     <div class="mhdr"><div class="mtitle">💬 Buat Diskusi</div><button class="mclose" onclick="closeModal('mo-forum')">✕</button></div>
     <div class="fr"><label>Topik</label><input type="text" id="f-topik" placeholder="Judul diskusi..."></div>
     <div class="fr"><label>Isi Diskusi</label><textarea id="f-isi" placeholder="Tuliskan pertanyaan atau pendapat..."></textarea></div>
+    <div class="fr"><label>📎 Link File (opsional)</label><input type="text" id="f-link" placeholder="https://drive.google.com/..."></div>
+    <p style="font-size:11px;color:var(--muted);margin:-8px 0 12px">Upload file ke Google Drive/OneDrive, lalu paste link-nya di sini.</p>
     <button class="btn bp bfull" onclick="saveForum()">💬 Posting</button>
   </div>
 </div>
@@ -666,6 +685,8 @@ function fillAdmin(){
     <div class="mhdr"><div class="mtitle">↩️ Balas Diskusi</div><button class="mclose" onclick="closeModal('mo-reply')">✕</button></div>
     <input type="hidden" id="rep-pid">
     <div class="fr"><label>Balasan</label><textarea id="r-isi" placeholder="Tulis balasan..."></textarea></div>
+    <div class="fr"><label>📎 Link File (opsional)</label><input type="text" id="r-link" placeholder="https://drive.google.com/..."></div>
+    <p style="font-size:11px;color:var(--muted);margin:-8px 0 12px">Upload file ke Google Drive/OneDrive, lalu paste link-nya di sini.</p>
     <button class="btn bp bfull" onclick="saveReply()">✈️ Kirim Balasan</button>
   </div>
 </div>
@@ -784,7 +805,7 @@ async function loadCP(user){
 
 // AUTH
 function showAuth(){document.getElementById('auth-screen').style.display='flex';document.getElementById('app').style.display='none';}
-function showApp(){
+async function showApp(){
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app').style.display='flex';
   var name=CP?.full_name||CU?.email||'?';
@@ -794,6 +815,9 @@ function showApp(){
   document.getElementById('hero-name').textContent=name;
   document.getElementById('hero-role').textContent=CP?.role==='admin'?'👑 Pengurus / Admin':'🎓 Guru / Anggota';
   navigate(sessionStorage.getItem('mgmp-page')||'dashboard');
+  // Load notifikasi awal + refresh setiap 60 detik
+  loadNotifCount();
+  setInterval(loadNotifCount, 60000);
 }
 async function doRequestReset(){
   var name=val('rp-name'),email=val('rp-email'),reason=val('rp-reason');
@@ -882,6 +906,16 @@ function navigate(pg){
     b.style.background=isAct?'var(--c1l)':'';
     b.style.color=isAct?'var(--c1)':'';
   });
+  // Mark notif as seen when opening relevant pages
+  if(['pengumuman','forum','agenda'].includes(pg)){
+    var now=new Date().toISOString();
+    var seen=JSON.parse(localStorage.getItem('mgmp_seen')||'{}');
+    if(pg==='pengumuman')seen.pengumuman=now;
+    if(pg==='forum'){seen.forum=now;seen.reply=now;}
+    if(pg==='agenda')seen.agenda=now;
+    localStorage.setItem('mgmp_seen',JSON.stringify(seen));
+    setTimeout(loadNotifCount,500);
+  }
 }
 function fabAction(){if(fabAct)fabAct();}
 async function loadPgData(pg){
@@ -1003,7 +1037,8 @@ async function loadForum(){
       <div class="fc-top"><div class="fc-av" style="background:${col}">${av}</div><div><div class="fc-author">${esc(p.author_name||'Anonim')}</div><div class="fc-time">📅 ${fd(p.created_at)}</div></div></div>
       <div class="fc-topic">${esc(p.topik)}</div>
       <div class="fc-body">${esc(p.isi)}</div>
-      ${rs.length?`<div class="fc-replies">${rs.map(r=>{var rc=avc(r.author_name);return`<div class="rep"><div class="rep-av" style="background:${rc}">${ini(r.author_name)}</div><div class="rep-bub"><div class="rep-author">${esc(r.author_name)}</div><div class="rep-text">${esc(r.isi)}</div></div></div>`;}).join('')}</div>`:''}
+      ${p.link_file?`<a href="${esc(p.link_file)}" target="_blank" class="btn bg bsm" style="margin-top:6px;display:inline-flex">📎 Lihat File</a>`:''}
+      ${rs.length?`<div class="fc-replies">${rs.map(r=>{var rc=avc(r.author_name);return`<div class="rep"><div class="rep-av" style="background:${rc}">${ini(r.author_name)}</div><div class="rep-bub"><div class="rep-author">${esc(r.author_name)}</div><div class="rep-text">${esc(r.isi)}</div>${r.link_file?`<a href="${esc(r.link_file)}" target="_blank" class="btn bg bsm" style="margin-top:5px;display:inline-flex;font-size:10px">📎 File</a>`:''}</div></div>`;}).join('')}</div>`:''}
       <div class="fc-footer">
         <button class="fc-act" style="color:var(--c1)" onclick="openReplyModal('${p.id}')">↩️ Balas (${rs.length})</button>
         ${canDel?`<button class="fc-act" style="color:var(--c2)" onclick="delForum('${p.id}')">🗑️ Hapus</button>`:''}
@@ -1011,15 +1046,17 @@ async function loadForum(){
     </div>`;
   }).join('');
 }
-function openForumModal(){clr('f-topik','f-isi');document.getElementById('mo-forum').classList.add('on');}
+function openForumModal(){clr('f-topik','f-isi','f-link');document.getElementById('mo-forum').classList.add('on');}
 async function saveForum(){
-  await sb.from('forum_posts').insert([{topik:val('f-topik'),isi:val('f-isi'),author_id:CU.id,author_name:CP?.full_name}]);
-  closeModal('mo-forum');clr('f-topik','f-isi');loadForum();toast('✅ Diskusi diposting!');
+  var link=val('f-link');
+  await sb.from('forum_posts').insert([{topik:val('f-topik'),isi:val('f-isi'),author_id:CU.id,author_name:CP?.full_name,link_file:link||null}]);
+  closeModal('mo-forum');clr('f-topik','f-isi','f-link');loadForum();toast('✅ Diskusi diposting!');
 }
-function openReplyModal(id){sv('rep-pid',id);clr('r-isi');document.getElementById('mo-reply').classList.add('on');}
+function openReplyModal(id){sv('rep-pid',id);clr('r-isi','r-link');document.getElementById('mo-reply').classList.add('on');}
 async function saveReply(){
-  await sb.from('forum_replies').insert([{post_id:val('rep-pid'),isi:val('r-isi'),author_id:CU.id,author_name:CP?.full_name}]);
-  closeModal('mo-reply');clr('r-isi');loadForum();toast('✅ Balasan terkirim!');
+  var link=val('r-link');
+  await sb.from('forum_replies').insert([{post_id:val('rep-pid'),isi:val('r-isi'),author_id:CU.id,author_name:CP?.full_name,link_file:link||null}]);
+  closeModal('mo-reply');clr('r-isi','r-link');loadForum();toast('✅ Balasan terkirim!');
 }
 async function delForum(id){
   var ok=await confirm2('Hapus Diskusi','Semua balasan ikut terhapus.');
@@ -1255,7 +1292,67 @@ async function doResetPw() {
   }
 }
 
-// Wire real functions to window so head stubs can call them
+// NOTIFICATION SYSTEM
+var _lastSeen = {};
+var _notifTotal = 0;
+
+async function loadNotifCount() {
+  try {
+    var seen = JSON.parse(localStorage.getItem('mgmp_seen') || '{}');
+    var total = 0;
+
+    // Cek pengumuman baru
+    var {data: peng} = await sb.from('pengumuman').select('id,created_at').order('created_at', {ascending: false});
+    if (peng?.length) {
+      var lastSeenPeng = seen.pengumuman || '2000-01-01';
+      total += peng.filter(p => p.created_at > lastSeenPeng).length;
+    }
+
+    // Cek agenda baru
+    var {data: ag} = await sb.from('agenda').select('id,created_at').order('created_at', {ascending: false});
+    if (ag?.length) {
+      var lastSeenAg = seen.agenda || '2000-01-01';
+      total += ag.filter(a => a.created_at > lastSeenAg).length;
+    }
+
+    // Cek diskusi baru
+    var {data: forum} = await sb.from('forum_posts').select('id,created_at').order('created_at', {ascending: false});
+    if (forum?.length) {
+      var lastSeenForum = seen.forum || '2000-01-01';
+      total += forum.filter(f => f.created_at > lastSeenForum && f.author_id !== CU?.id).length;
+    }
+
+    // Cek balasan baru
+    var {data: replies} = await sb.from('forum_replies').select('id,created_at').order('created_at', {ascending: false});
+    if (replies?.length) {
+      var lastSeenReply = seen.reply || '2000-01-01';
+      total += replies.filter(r => r.created_at > lastSeenReply && r.author_id !== CU?.id).length;
+    }
+
+    _notifTotal = total;
+    var badge = document.getElementById('notif-badge');
+    if (badge) {
+      if (total > 0) {
+        badge.textContent = total > 99 ? '99+' : total;
+        badge.classList.add('show');
+      } else {
+        badge.classList.remove('show');
+      }
+    }
+  } catch(e) {}
+}
+
+function markAllSeen() {
+  var now = new Date().toISOString();
+  var seen = {pengumuman: now, agenda: now, forum: now, reply: now};
+  localStorage.setItem('mgmp_seen', JSON.stringify(seen));
+  _notifTotal = 0;
+  var badge = document.getElementById('notif-badge');
+  if (badge) badge.classList.remove('show');
+}
+
+// Override navigate to mark seen when opening relevant pages
+var _origNavigate = null;
 window._doLogin=doLogin;window._doRegister=doRegister;window._doLogout=doLogout;
 window._navigate=navigate;window._fabAction=fabAction;
 window._filterGuru=filterGuru;window._swMateri=swMateri;window._swArsip=swArsip;
